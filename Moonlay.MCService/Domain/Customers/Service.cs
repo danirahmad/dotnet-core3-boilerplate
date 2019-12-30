@@ -41,6 +41,13 @@ namespace Moonlay.MCService.Customers
 
             return _customerRepo.DbSet.Where(criteria).OrderBy(o => o.LastName).Skip(page * size).Take(size).ToList();
         }
+
+        public List<CustomerTrail> GetCustomerLogs(Guid id)
+        {
+            var customer = _customerRepo.With(id);
+
+            return _customerRepo.DbSetTrail.Where(o=>o.CustomerId == id).ToList();
+        }
     }
 
 }

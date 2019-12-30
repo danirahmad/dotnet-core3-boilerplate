@@ -11,7 +11,5 @@ namespace Moonlay.MCService.Customers
         DbSet<CustomerTrail> DbSetTrail { get; }
 
         Customer With(Guid id);
-
-        CustomerTrail WithTrail(Int64 id);
     }
 }
