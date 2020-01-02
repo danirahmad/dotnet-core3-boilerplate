@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Moonlay.MCService.Db;
 using Moonlay.MCService.Models;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Moonlay.MCService.Customers
 {
@@ -11,42 +12,66 @@ namespace Moonlay.MCService.Customers
         private readonly ICustomerRepository _customerRepo;
         private readonly IDbContext _db;
         private readonly IDbTrailContext _dbTrail;
-        private readonly ISignInService _signIn;
 
-        public Service(ICustomerRepository repository, IDbContext db, IDbTrailContext dbTrail, ISignInService signIn)
+        public Service(ICustomerRepository repository, IDbContext db, IDbTrailContext dbTrail)
         {
             _customerRepo = repository;
             _db = db;
             _dbTrail = dbTrail;
-            _signIn = signIn;
         }
 
-        public Customer NewCustomer(string firstName, string lastName)
+        private async Task SaveChangesAsync()
         {
-            var customer = this._customerRepo.Store(Guid.NewGuid(), firstName, lastName, _signIn.CurrentUser);
+            await this._db.SaveChangesAsync(true);
+            await this._dbTrail.SaveChangesAsync(true);
+        }
 
-            this._db.SaveChanges();
+        public async Task<Customer> NewCustomerAsync(string firstName, string lastName)
+        {
+            if (string.IsNullOrEmpty(firstName))
+            {
+                throw new ArgumentException("message", nameof(firstName));
+            }
 
-            this._customerRepo.DbSetTrail.Add(customer.ToTrail());
+            var newCustomerId = Guid.NewGuid();
 
-            this._dbTrail.SaveChanges();
+            var customer = await this._customerRepo.StoreAsync(newCustomerId, firstName, lastName);
+
+            await SaveChangesAsync();
 
             return customer;
         }
 
-        public List<Customer> Search(Func<Customer, bool> criteria = null, int page = 0, int size = 25)
+        public Task<List<Customer>> SearchAsync(Func<Customer, bool> criteria = null, int page = 0, int size = 25)
         {
             if (criteria == null)
                 criteria = x => true;
 
-            return _customerRepo.DbSet.Where(criteria).OrderBy(o => o.LastName).Skip(page * size).Take(size).ToList();
+            var result = _customerRepo.DbSet.Where(criteria).OrderBy(o => o.LastName).Skip(page * size).Take(size).ToList();
+
+            return Task.FromResult(result);
         }
 
-        public List<CustomerTrail> GetCustomerLogs(Guid id)
+        public Task<List<CustomerTrail>> LogsAsync(Guid id)
         {
             var customer = _customerRepo.With(id);
 
-            return _customerRepo.DbSetTrail.Where(o=>o.CustomerId == id).ToList();
+            var logs = _customerRepo.DbSetTrail.Where(o => o.CustomerId == id).ToList();
+
+            return Task.FromResult(logs);
+        }
+
+        public async Task<Customer> UpdateProfileAsync(Guid id, string firstName, string lastName)
+        {
+            var customer = _customerRepo.With(id);
+            customer.FirstName = firstName;
+            customer.LastName = lastName;
+
+            await _customerRepo.UpdateAsync(customer);
+
+            await SaveChangesAsync();
+
+            return customer;
         }
     }
 

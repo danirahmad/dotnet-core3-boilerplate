@@ -6,6 +6,7 @@ using Xunit;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Moonlay.MCService.UnitTests.Domain.Customers
 {
@@ -44,7 +45,6 @@ namespace Moonlay.MCService.UnitTests.Domain.Customers
         public ServiceTest()
         {
             _MockRepo = new MockRepository(MockBehavior.Strict);
-            _SignInService = _MockRepo.Create<ISignInService>();
             _CustomerRepo = _MockRepo.Create<ICustomerRepository>();
         }
 
@@ -55,50 +55,101 @@ namespace Moonlay.MCService.UnitTests.Domain.Customers
 
         private MCService.Customers.Service CreateService(DbTestConnection db)
         {
-            _CustomerRepo.Setup(s => s.DbSet).Returns(db.Db.Set<Models.Customer>());
-            _CustomerRepo.Setup(s => s.DbSetTrail).Returns(db.DbTrail.Set<Models.CustomerTrail>());
-
-            _SignInService.Setup(x => x.Demo).Returns(true);
-            _SignInService.Setup(x => x.CurrentUser).Returns("samplelogin@moonlay.com");
-
-            return new MCService.Customers.Service(_CustomerRepo.Object, db.Db, db.DbTrail, _SignInService.Object);
+            return new MCService.Customers.Service(_CustomerRepo.Object, db.Db, db.DbTrail);
         }
 
-        [Fact(DisplayName = "CustomerService.CreateCustomer_Successfully")]
-        public void CreateCustomer_Successfully()
+
+        [Theory(DisplayName = "CustomerService.CreateCustomer_Successfully")]
+        [InlineData("Afandy", "Lamusu")]
+        [InlineData("Afandy@", "Lamusu")]
+        [InlineData("Afandy&77", "Lamusu")]
+        public async Task CreateCustomer_Successfully(string firstName, string lastName)
         {
             using (var db = new DbTestConnection())
             {
-                // Prepare Data
-                var firstName = "Afandy";
-                var lastName = "Lamusu";
+                _CustomerRepo.Setup(s => s.DbSet).Returns(db.Db.Set<Models.Customer>());
+                _CustomerRepo.Setup(s => s.DbSetTrail).Returns(db.DbTrail.Set<Models.CustomerTrail>());
+                _CustomerRepo.Setup(s => s.CurrentUser).Returns("samplelogin@moonlay.com");
+                _CustomerRepo.Setup(s => s.IsDemo).Returns(true);
 
                 // Action
                 var service = CreateService(db);
-                var customer = service.NewCustomer(firstName, lastName);
-
+                Models.Customer customer = await service.NewCustomerAsync(firstName, lastName); ;
+                
                 // Asserts
                 customer.Should().NotBeNull();
                 customer.FirstName.Should().Be(firstName);
                 customer.LastName.Should().Be(lastName);
+
             }
 
         }
 
-        [Fact(DisplayName = "CustomerService.Search_Successfully")]
-        public void Search_Successfully()
+        [Theory(DisplayName = "CustomerService.CreateCustomer_Fail_FirstName_NullOrEmpty")]
+        [InlineData("", "Lamusu")]
+        public async Task CreateCustomer_Fail_FirstName(string firstName, string lastName)
         {
             using (var db = new DbTestConnection())
             {
+                var service = CreateService(db);
+
+                // Action
+                Func<Task> act = async () => { await service.NewCustomerAsync(firstName, lastName); };
+
+                // Asserts
+                await act.Should().ThrowAsync<ArgumentException>();
+            }
+        }
+
+        [Fact(DisplayName = "CustomerService.Search_Successfully")]
+        public async Task Search_Successfully()
+        {
+            using (var db = new DbTestConnection())
+            {
+                _CustomerRepo.Setup(s => s.DbSet).Returns(db.Db.Set<Models.Customer>());
+                _CustomerRepo.Setup(s => s.DbSetTrail).Returns(db.DbTrail.Set<Models.CustomerTrail>());
+                _CustomerRepo.Setup(s => s.CurrentUser).Returns("samplelogin@moonlay.com");
+                _CustomerRepo.Setup(s => s.IsDemo).Returns(true);
+
                 // prepare data
                 var service = CreateService(db);
-                service.NewCustomer("Andy", "Hasan");
-                service.NewCustomer("Andy", "Kribo");
+                await service.NewCustomerAsync("Andy", "Hasan");
+                await service.NewCustomerAsync("Andy", "Kribo");
 
-                var customers = service.Search(x => x.FirstName == "Andy");
+                var customers = await service.SearchAsync(x => x.FirstName == "Andy");
 
                 customers.Should().Contain(x => x.FirstName == "Andy");
             }
+        }
+
+        [Fact(DisplayName = "CustomerService.UpdateProfile_Successfully")]
+        public async Task UpdateProfile_Successfully()
+        {
+            using (var db = new DbTestConnection())
+            {
+                _CustomerRepo.Setup(s => s.DbSet).Returns(db.Db.Set<Models.Customer>());
+                _CustomerRepo.Setup(s => s.DbSetTrail).Returns(db.DbTrail.Set<Models.CustomerTrail>());
+                _CustomerRepo.Setup(s => s.CurrentUser).Returns("samplelogin@moonlay.com");
+                _CustomerRepo.Setup(s => s.IsDemo).Returns(true);
+
+                // prepare data
+                var service = CreateService(db);
+
+                var newCustomer = await service.NewCustomerAsync("Andy", "Kribo");
+                DateTimeOffset timeOfCreated = newCustomer.UpdatedAt;
+
+                _CustomerRepo.Setup(x => x.With(newCustomer.Id)).Returns(newCustomer);
+
+                // Action
+                var updatedCustomer = await service.UpdateProfileAsync(newCustomer.Id, "Andy", "Hasan");
+
+                // Assert : check the time of created not equal the time when updated.
+                updatedCustomer.Id.Should().Be(newCustomer.Id);
+                updatedCustomer.UpdatedAt.Should().BeOnOrAfter(timeOfCreated);
+
+                // validate the logs, should contain 2 records.
+                (await service.LogsAsync(newCustomer.Id)).Should().HaveCount(2);
+            }   
         }
     }
 }

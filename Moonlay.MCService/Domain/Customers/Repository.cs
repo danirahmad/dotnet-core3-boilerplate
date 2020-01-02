@@ -3,26 +3,28 @@ using Microsoft.EntityFrameworkCore;
 using Moonlay.MCService.Db;
 using Moonlay.MCService.Models;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Moonlay.MCService.Customers
 {
     internal class Repository : ICustomerRepository
     {
-        private readonly DbSet<Customer> _dbSet;
-        private readonly DbSet<CustomerTrail> _dbSetTrail;
+        public DbSet<Customer> DbSet { get; }
+        public DbSet<CustomerTrail> DbSetTrail { get; }
+        public string CurrentUser { get; }
+        public bool IsDemo { get; }
 
-        public DbSet<Customer> DbSet => _dbSet;
-        public DbSet<CustomerTrail> DbSetTrail => _dbSetTrail;
-
-        public Repository(IDbContext dbContext, IDbTrailContext dbTrailContext)
+        public Repository(IDbContext dbContext, IDbTrailContext dbTrailContext, ISignInService signIn)
         {
-            _dbSet = dbContext.Set<Customer>();
-            _dbSetTrail = dbTrailContext.Set<CustomerTrail>();
+            DbSet = dbContext.Set<Customer>();
+            DbSetTrail = dbTrailContext.Set<CustomerTrail>();
+            CurrentUser = signIn.CurrentUser;
+            IsDemo = signIn.Demo;
         }
 
         public Customer With(Guid id)
         {
-            var r = _dbSet.FirstOrDefault(o => o.Id == id);
+            var r = DbSet.FirstOrDefault(o => o.Id == id);
             if (r == null) throw new RecordNotFoundException($"{nameof(Customer)} {id} not found");
 
             return r;
@@ -30,7 +32,7 @@ namespace Moonlay.MCService.Customers
 
         public CustomerTrail WithTrail(long id)
         {
-            var r = _dbSetTrail.FirstOrDefault(o => o.Id == id);
+            var r = DbSetTrail.FirstOrDefault(o => o.Id == id);
             if (r == null) throw new RecordNotFoundException($"{nameof(CustomerTrail)} {id} not found");
 
             return r;
@@ -39,26 +41,40 @@ namespace Moonlay.MCService.Customers
 
     internal static class RepositoryHelpers
     {
-        public static Customer Store(this ICustomerRepository r, Guid id, string firstName, string lastName, string actionBy)
+        public static async Task<Customer> StoreAsync(this ICustomerRepository repo, Guid id, string firstName, string lastName)
         {
             var record = new Customer(id)
             {
                 FirstName = firstName,
                 LastName = lastName,
                 CreatedAt = DateTime.Now,
-                CreatedBy = actionBy,
+                CreatedBy = repo.CurrentUser,
                 UpdatedAt = DateTime.Now,
-                UpdatedBy = actionBy
+                UpdatedBy = repo.CurrentUser,
+                Deleted = false,
+                Tested = repo.IsDemo
             };
 
-            r.DbSet.Add(record);
+            await repo.DbSet.AddAsync(record);
+            await repo.DbSetTrail.AddAsync(record.ToTrail());
 
             return record;
         }
 
-        public static void Remove(this ICustomerRepository r, Guid id)
+        public static async Task<Customer> UpdateAsync(this ICustomerRepository repo, Customer record)
         {
-            r.DbSet.Remove(r.With(id).MarkDeleted());
+            record.UpdatedAt = DateTime.Now;
+            record.UpdatedBy = repo.CurrentUser;
+
+            repo.DbSet.Update(record);
+            await repo.DbSetTrail.AddAsync(record.ToTrail());
+
+            return record;
+        }
+
+        public static void Remove(this ICustomerRepository repo, Guid id)
+        {
+            repo.DbSet.Remove(repo.With(id).MarkDeleted());
         }
     }
 }

@@ -21,11 +21,11 @@ namespace Moonlay.MCService.Controllers
         [HttpGet()]
         public async Task<ActionResult<List<CustomerDto>>> Get()
         {
-            var result = _customerService.Search()
+            var result = (await _customerService.SearchAsync())
                 .Select(o=>new CustomerDto(o))
                 .ToList();
 
-            return await Task.FromResult(Ok(result));
+            return Ok(result);
         }
     }
 }

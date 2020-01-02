@@ -20,16 +20,8 @@ namespace Moonlay.MCService
             _httpContext = httpContext;
         }
 
-        public string CurrentUser => _httpContext.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+        public string CurrentUser => _httpContext.HttpContext.User?.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-        public bool Demo
-        {
-            get
-            {
-                if (_httpContext.HttpContext.User == null) return false;
-
-                return _httpContext.HttpContext.User.FindFirst(c => c.ValueType == "demo") != null;
-            }
-        }
+        public bool Demo => _httpContext.HttpContext.User == null ? false : _httpContext.HttpContext.User.FindFirst(c => c.ValueType == "demo") != null;
     }
 }

@@ -39,8 +39,6 @@ namespace Moonlay.MCService
 
             services.AddDbContext<MyDbContext>(options => options.UseSqlServer(Configuration.GetSection("ConnectionStrings:Connection").Value));
             services.AddDbContext<MyDbTrailContext>(options => options.UseSqlServer(Configuration.GetSection("ConnectionStrings:ConnectionTrail").Value));
-
-
             services.AddTransient<IDbContext, MyDbContext>();
             services.AddTransient<IDbTrailContext, MyDbTrailContext>();
 
@@ -48,10 +46,19 @@ namespace Moonlay.MCService
             services.AddTransient<Customers.ICustomerRepository, Customers.Repository>();
             services.AddTransient<Customers.ICustomerService, Customers.Service>();
 
-            // AddGraphQL(services);
-            services.AddControllers();
             services.AddHttpContextAccessor();
 
+            AddRestFullServices(services);
+
+            // AddGraphQL(services);
+
+            services.AddHostedService<KafkaConsumersHosted>();
+            // services.AddScoped<IScopedProcessingService, ScopedProcessingService>();
+        }
+
+        private void AddRestFullServices(IServiceCollection services)
+        {
+            services.AddControllers();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo
@@ -73,9 +80,6 @@ namespace Moonlay.MCService
                 });
 
             });
-
-            services.AddHostedService<KafkaConsumersHosted>();
-            // services.AddScoped<IScopedProcessingService, ScopedProcessingService>();
         }
 
         private void AddGraphQL(IServiceCollection services)
