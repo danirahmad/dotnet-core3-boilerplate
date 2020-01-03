@@ -18,5 +18,9 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.0.0-rc5" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Moonlay.DemoKafkaTopics\Moonlay.DemoKafkaTopics.csproj" />
+  </ItemGroup>
+
 
 </Project>

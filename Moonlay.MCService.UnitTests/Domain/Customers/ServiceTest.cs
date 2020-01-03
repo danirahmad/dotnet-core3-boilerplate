@@ -22,8 +22,8 @@ namespace Moonlay.MCService.UnitTests.Domain.Customers
                 .UseInMemoryDatabase(databaseName: "moonlaydev_trail")
                 .Options;
 
-            Db = new MyDbContext(options);
             DbTrail = new MyDbTrailContext(optionsTrail);
+            Db = new MyDbContext(options, DbTrail);
         }
 
         public MyDbContext Db { get; }

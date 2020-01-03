@@ -56,25 +56,29 @@ namespace Moonlay.MCService.Customers
             };
 
             await repo.DbSet.AddAsync(record);
-            await repo.DbSetTrail.AddAsync(record.ToTrail());
 
             return record;
         }
 
-        public static async Task<Customer> UpdateAsync(this ICustomerRepository repo, Customer record)
+        public static Task<Customer> UpdateAsync(this ICustomerRepository repo, Customer record)
         {
             record.UpdatedAt = DateTime.Now;
             record.UpdatedBy = repo.CurrentUser;
 
             repo.DbSet.Update(record);
-            await repo.DbSetTrail.AddAsync(record.ToTrail());
 
-            return record;
+            return Task.FromResult(record);
         }
 
-        public static void Remove(this ICustomerRepository repo, Guid id)
+        public static Task RemoveAsync(this ICustomerRepository repo, Guid id)
         {
-            repo.DbSet.Remove(repo.With(id).MarkDeleted());
+            var record = repo.With(id);
+            record.UpdatedAt = DateTime.Now;
+            record.UpdatedBy = repo.CurrentUser;
+
+            repo.DbSet.Update(record);
+
+            return Task.FromResult(record);
         }
     }
 }

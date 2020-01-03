@@ -2,6 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Moonlay.MCService.Db
 {
@@ -11,6 +12,10 @@ namespace Moonlay.MCService.Db
         
         int SaveChanges();
 
-        Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default);
+        //Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default);
+
+        Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
+
+        EntityEntry Add(object entity);
     }
 }

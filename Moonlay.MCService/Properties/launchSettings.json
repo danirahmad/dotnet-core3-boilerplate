@@ -17,7 +17,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "Moonlay.CleanArchMicroservice": {
+    "Moonlay.MCService": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "swagger",

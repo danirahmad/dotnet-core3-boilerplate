@@ -3,9 +3,13 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Confluent.Kafka;
+using Confluent.Kafka.SyncOverAsync;
+using Confluent.SchemaRegistry;
+using Confluent.SchemaRegistry.Serdes;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Moonlay.MCService.KafkaStream.Topics;
 
 namespace Moonlay.MCService
 {
@@ -36,16 +40,11 @@ namespace Moonlay.MCService
         {
             using (var scope = Services.CreateScope())
             {
-                var scopedProcessingService =
-                    scope.ServiceProvider
-                        .GetRequiredService<IScopedProcessingService>();
 
-                // await scopedProcessingService.DoWork(stoppingToken);
-
-                var conf = new ConsumerConfig
+                var consumerConfig = new ConsumerConfig
                 {
                     GroupId = "test-consumer-group",
-                    BootstrapServers = "localhost:9092",
+                    BootstrapServers = "192.168.99.100:9092",
                     // Note: The AutoOffsetReset property determines the start offset in the event
                     // there are not yet any committed offsets for the consumer group for the
                     // topic/partitions of interest. By default, offsets are committed
@@ -54,37 +53,66 @@ namespace Moonlay.MCService
                     AutoOffsetReset = AutoOffsetReset.Earliest
                 };
 
-                using (var c = new ConsumerBuilder<Ignore, string>(conf).Build())
+                var schemaRegistryConfig = new SchemaRegistryConfig
                 {
-                    c.Subscribe(new[] { "newCustomerTopic" });
+                    Url = "192.168.99.100:8081",
+                    // Note: you can specify more than one schema registry url using the
+                    // schema.registry.url property for redundancy (comma separated list). 
+                    // The property name is not plural to follow the convention set by
+                    // the Java implementation.
+                    // optional schema registry client properties:
+                    RequestTimeoutMs = 5000,
+                    MaxCachedSchemas = 10
+                };
 
-                    CancellationTokenSource cts = new CancellationTokenSource();
-                    Console.CancelKeyPress += (_, e) =>
-                    {
-                        e.Cancel = true; // prevent the process from terminating.
-                        cts.Cancel();
-                    };
+                //var avroSerializerConfig = new Confluent.SchemaRegistry.Serdes.AvroSerializerConfig
+                //{
+                //    // optional Avro serializer properties:
+                //    BufferBytes = 100,
+                //    AutoRegisterSchemas = true
+                //};
 
-                    try
+                using var schemaRegistry = new CachedSchemaRegistryClient(schemaRegistryConfig);
+                using var c = new ConsumerBuilder<string, MessageTypes.LogMessage>(consumerConfig)
+                    .SetKeyDeserializer(new AvroDeserializer<string>(schemaRegistry).AsSyncOverAsync())
+                    .SetValueDeserializer(new AvroDeserializer<MessageTypes.LogMessage>(schemaRegistry).AsSyncOverAsync())
+                    .SetErrorHandler((_, e) => Console.WriteLine($"Error: {e.Reason}"))
+                    .Build();
+
+                c.Subscribe(new[] { NewCustomerTopic.TOPIC_NAME });
+
+                CancellationTokenSource cts = new CancellationTokenSource();
+                Console.CancelKeyPress += (_, e) =>
+                {
+                    e.Cancel = true; // prevent the process from terminating.
+                    cts.Cancel();
+                };
+
+                try
+                {
+                    while (!stoppingToken.IsCancellationRequested)
                     {
-                        while (!stoppingToken.IsCancellationRequested)
+                        try
                         {
-                            try
+                            var cr = c.Consume(cts.Token);
+                            _logger.LogInformation($"Consumed message '{cr.Message.Key}' '{Newtonsoft.Json.JsonConvert.SerializeObject(cr.Message.Value)}' at: '{cr.TopicPartitionOffset}'.");
+
+                            switch (cr.Topic)
                             {
-                                var cr = c.Consume(cts.Token);
-                                _logger.LogInformation($"Consumed message '{cr.Value}' at: '{cr.TopicPartitionOffset}'.");
+                                case NewCustomerTopic.TOPIC_NAME: break;
                             }
-                            catch (ConsumeException e)
-                            {
-                                _logger.LogError($"Error occured: {e.Error.Reason}");
-                            }
+
+                        }
+                        catch (ConsumeException e)
+                        {
+                            _logger.LogError($"Error occured: {e.Error.Reason}");
                         }
                     }
-                    catch (OperationCanceledException)
-                    {
-                        // Ensure the consumer leaves the group cleanly and final offsets are committed.
-                        c.Close();
-                    }
+                }
+                catch (OperationCanceledException)
+                {
+                    // Ensure the consumer leaves the group cleanly and final offsets are committed.
+                    c.Close();
                 }
             }
 

@@ -18,14 +18,14 @@ namespace Moonlay.MCService.Models
         [MaxLength(64)]
         public string LastName { get; set; }
 
-        public CustomerTrail ToTrail()
+        public override object ToTrail()
         {
             return new CustomerTrail
             {
                 CustomerId = Id,
                 FirstName = FirstName,
                 LastName = LastName,
-                
+
                 CreatedAt = CreatedAt,
                 CreatedBy = CreatedBy,
                 UpdatedAt = UpdatedAt,
@@ -36,7 +36,7 @@ namespace Moonlay.MCService.Models
         }
     }
 
-    public class CustomerTrail : BaseModel
+    public class CustomerTrail : BaseModelTrail
     {
         public Int64 Id { get; set; }
 

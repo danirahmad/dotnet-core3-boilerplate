@@ -13,17 +13,15 @@ namespace Moonlay.MCService.Customers
         private readonly IDbContext _db;
         private readonly IDbTrailContext _dbTrail;
 
-        public Service(ICustomerRepository repository, IDbContext db, IDbTrailContext dbTrail)
+        public Service(ICustomerRepository repository, IDbContext db)
         {
             _customerRepo = repository;
             _db = db;
-            _dbTrail = dbTrail;
         }
 
         private async Task SaveChangesAsync()
         {
-            await this._db.SaveChangesAsync(true);
-            await this._dbTrail.SaveChangesAsync(true);
+            await this._db.SaveChangesAsync();
         }
 
         public async Task<Customer> NewCustomerAsync(string firstName, string lastName)

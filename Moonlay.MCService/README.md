@@ -1,10 +1,10 @@
 # Moonlay Boilerplates - NetCore 3.1 WebApi Boilerplate
 
 ## Features
-- Repository
+- Repository & UnitOfWork
 - DDD
 - History Table (audit trail) for each entities, are store in separate DB
-- Confluent Avro Message (TBD)
+- Confluent Avro Message
 - GrahpQL (TBD)
 - Logging to logstash + elastic search (TBD)
 - Monitoring the service (TBD)
