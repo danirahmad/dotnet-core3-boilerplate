@@ -11,7 +11,6 @@ namespace Moonlay.MCService.Customers
     {
         private readonly ICustomerRepository _customerRepo;
         private readonly IDbContext _db;
-        private readonly IDbTrailContext _dbTrail;
 
         public Service(ICustomerRepository repository, IDbContext db)
         {

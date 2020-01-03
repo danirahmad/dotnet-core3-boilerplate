@@ -55,7 +55,7 @@ namespace Moonlay.MCService.UnitTests.Domain.Customers
 
         private MCService.Customers.Service CreateService(DbTestConnection db)
         {
-            return new MCService.Customers.Service(_CustomerRepo.Object, db.Db, db.DbTrail);
+            return new Service(_CustomerRepo.Object, db.Db);
         }
 
 
@@ -68,7 +68,6 @@ namespace Moonlay.MCService.UnitTests.Domain.Customers
             using (var db = new DbTestConnection())
             {
                 _CustomerRepo.Setup(s => s.DbSet).Returns(db.Db.Set<Models.Customer>());
-                _CustomerRepo.Setup(s => s.DbSetTrail).Returns(db.DbTrail.Set<Models.CustomerTrail>());
                 _CustomerRepo.Setup(s => s.CurrentUser).Returns("samplelogin@moonlay.com");
                 _CustomerRepo.Setup(s => s.IsDemo).Returns(true);
 
@@ -107,7 +106,6 @@ namespace Moonlay.MCService.UnitTests.Domain.Customers
             using (var db = new DbTestConnection())
             {
                 _CustomerRepo.Setup(s => s.DbSet).Returns(db.Db.Set<Models.Customer>());
-                _CustomerRepo.Setup(s => s.DbSetTrail).Returns(db.DbTrail.Set<Models.CustomerTrail>());
                 _CustomerRepo.Setup(s => s.CurrentUser).Returns("samplelogin@moonlay.com");
                 _CustomerRepo.Setup(s => s.IsDemo).Returns(true);
 

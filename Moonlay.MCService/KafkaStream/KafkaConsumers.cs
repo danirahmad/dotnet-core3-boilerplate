@@ -99,7 +99,9 @@ namespace Moonlay.MCService
 
                             switch (cr.Topic)
                             {
-                                case NewCustomerTopic.TOPIC_NAME: break;
+                                case NewCustomerTopic.TOPIC_NAME: 
+                                    // PUT New Customer Handler here
+                                    break;
                             }
 
                         }

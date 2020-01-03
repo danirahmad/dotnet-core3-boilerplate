@@ -1,9 +1,10 @@
+using Moonlay.Core.Models;
 using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace Moonlay.MCService.Models
 {
-    public class Customer : BaseModel
+    public class Customer : Entity
     {
         public Customer(Guid id)
         {
@@ -36,7 +37,7 @@ namespace Moonlay.MCService.Models
         }
     }
 
-    public class CustomerTrail : BaseModelTrail
+    public class CustomerTrail : EntityTrail
     {
         public Int64 Id { get; set; }
 

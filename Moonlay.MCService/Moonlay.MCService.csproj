@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Moonlay.Core.Models\Moonlay.Core.Models.csproj" />
     <ProjectReference Include="..\Moonlay.DemoKafkaTopics\Moonlay.DemoKafkaTopics.csproj" />
   </ItemGroup>
 
