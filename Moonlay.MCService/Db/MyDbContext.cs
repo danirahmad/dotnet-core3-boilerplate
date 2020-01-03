@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Moonlay.Core.Models;
 using Moonlay.MCService.Models;
 using System.Linq;
 using System.Threading;
@@ -27,10 +28,11 @@ namespace Moonlay.MCService.Db
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
-            var entities = this.ChangeTracker.Entries<BaseModel>().Select(o => o.Entity.ToTrail());
-            foreach(var entity in entities)
+            var trailEntities = this.ChangeTracker.Entries<Entity>().Select(o => o.Entity.ToTrail());
+
+            foreach(var trail in trailEntities)
             {
-                _trailContext.Add(entity);
+                _trailContext.Add(trail);
             }
 
             var result = await base.SaveChangesAsync(cancellationToken);
