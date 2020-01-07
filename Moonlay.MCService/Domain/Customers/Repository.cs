@@ -12,14 +12,14 @@ namespace Moonlay.MCService.Customers
         public DbSet<Customer> DbSet { get; }
         public DbSet<CustomerTrail> DbSetTrail { get; }
         public string CurrentUser { get; }
-        public bool IsDemo { get; }
+        public bool IsCurrentUserDemo { get; }
 
         public Repository(IDbContext dbContext, IDbTrailContext dbTrailContext, ISignInService signIn)
         {
             DbSet = dbContext.Set<Customer>();
             DbSetTrail = dbTrailContext.Set<CustomerTrail>();
             CurrentUser = signIn.CurrentUser;
-            IsDemo = signIn.Demo;
+            IsCurrentUserDemo = signIn.Demo;
         }
 
         public Customer With(Guid id)
@@ -41,6 +41,14 @@ namespace Moonlay.MCService.Customers
 
     internal static class RepositoryHelpers
     {
+        /// <summary>
+        /// Save new Customer
+        /// </summary>
+        /// <param name="repo"></param>
+        /// <param name="id"></param>
+        /// <param name="firstName"></param>
+        /// <param name="lastName"></param>
+        /// <returns></returns>
         public static async Task<Customer> StoreAsync(this ICustomerRepository repo, Guid id, string firstName, string lastName)
         {
             var record = new Customer(id)
@@ -52,7 +60,7 @@ namespace Moonlay.MCService.Customers
                 UpdatedAt = DateTime.Now,
                 UpdatedBy = repo.CurrentUser,
                 Deleted = false,
-                Tested = repo.IsDemo
+                Tested = repo.IsCurrentUserDemo
             };
 
             await repo.DbSet.AddAsync(record);

@@ -69,12 +69,12 @@ namespace Moonlay.MCService.UnitTests.Domain.Customers
             {
                 _CustomerRepo.Setup(s => s.DbSet).Returns(db.Db.Set<Models.Customer>());
                 _CustomerRepo.Setup(s => s.CurrentUser).Returns("samplelogin@moonlay.com");
-                _CustomerRepo.Setup(s => s.IsDemo).Returns(true);
+                _CustomerRepo.Setup(s => s.IsCurrentUserDemo).Returns(true);
 
                 // Action
                 var service = CreateService(db);
                 Models.Customer customer = await service.NewCustomerAsync(firstName, lastName); ;
-                
+
                 // Asserts
                 customer.Should().NotBeNull();
                 customer.FirstName.Should().Be(firstName);
@@ -107,7 +107,7 @@ namespace Moonlay.MCService.UnitTests.Domain.Customers
             {
                 _CustomerRepo.Setup(s => s.DbSet).Returns(db.Db.Set<Models.Customer>());
                 _CustomerRepo.Setup(s => s.CurrentUser).Returns("samplelogin@moonlay.com");
-                _CustomerRepo.Setup(s => s.IsDemo).Returns(true);
+                _CustomerRepo.Setup(s => s.IsCurrentUserDemo).Returns(true);
 
                 // prepare data
                 var service = CreateService(db);
@@ -128,7 +128,7 @@ namespace Moonlay.MCService.UnitTests.Domain.Customers
                 _CustomerRepo.Setup(s => s.DbSet).Returns(db.Db.Set<Models.Customer>());
                 _CustomerRepo.Setup(s => s.DbSetTrail).Returns(db.DbTrail.Set<Models.CustomerTrail>());
                 _CustomerRepo.Setup(s => s.CurrentUser).Returns("samplelogin@moonlay.com");
-                _CustomerRepo.Setup(s => s.IsDemo).Returns(true);
+                _CustomerRepo.Setup(s => s.IsCurrentUserDemo).Returns(true);
 
                 // prepare data
                 var service = CreateService(db);

@@ -20,6 +20,9 @@ namespace Moonlay.Core.Models
 
         public DateTimeOffset UpdatedAt { get; set; }
 
+        /// <summary>
+        /// Enable Soft Delete
+        /// </summary>
         public bool Deleted { get; set; }
 
         // Tested indicate for the record running in testing mode

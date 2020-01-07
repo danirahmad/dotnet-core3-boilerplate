@@ -4,7 +4,7 @@
 - Repository & UnitOfWork
 - DDD
 - History Table (audit trail) for each entities, are store in separate DB
-- Confluent Avro Message
+- Data Publishing: Kafka + Avro Message
 - GrahpQL (TBD)
 - Logging to logstash + elastic search (TBD)
 - Monitoring the service (TBD)

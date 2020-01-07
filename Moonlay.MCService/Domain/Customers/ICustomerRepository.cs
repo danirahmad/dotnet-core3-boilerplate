@@ -14,6 +14,6 @@ namespace Moonlay.MCService.Customers
 
         string CurrentUser { get; }
 
-        bool IsDemo { get; }
+        bool IsCurrentUserDemo { get; }
     }
 }
