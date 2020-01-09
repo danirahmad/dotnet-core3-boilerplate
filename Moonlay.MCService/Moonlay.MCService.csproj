@@ -23,5 +23,9 @@
     <ProjectReference Include="..\Moonlay.DemoKafkaTopics\Moonlay.DemoKafkaTopics.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="KafkaStream\Producers\" />
+  </ItemGroup>
+
 
 </Project>

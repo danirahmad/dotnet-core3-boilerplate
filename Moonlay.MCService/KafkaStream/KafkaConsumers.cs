@@ -41,29 +41,9 @@ namespace Moonlay.MCService
             using (var scope = Services.CreateScope())
             {
 
-                var consumerConfig = new ConsumerConfig
-                {
-                    GroupId = "test-consumer-group",
-                    BootstrapServers = "192.168.99.100:9092",
-                    // Note: The AutoOffsetReset property determines the start offset in the event
-                    // there are not yet any committed offsets for the consumer group for the
-                    // topic/partitions of interest. By default, offsets are committed
-                    // automatically, so in this example, consumption will only start from the
-                    // earliest message in the topic 'my-topic' the first time you run the program.
-                    AutoOffsetReset = AutoOffsetReset.Earliest
-                };
+                var consumerConfig = scope.ServiceProvider.GetRequiredService<ConsumerConfig>();
 
-                var schemaRegistryConfig = new SchemaRegistryConfig
-                {
-                    Url = "192.168.99.100:8081",
-                    // Note: you can specify more than one schema registry url using the
-                    // schema.registry.url property for redundancy (comma separated list). 
-                    // The property name is not plural to follow the convention set by
-                    // the Java implementation.
-                    // optional schema registry client properties:
-                    RequestTimeoutMs = 5000,
-                    MaxCachedSchemas = 10
-                };
+                var schemaRegistryConfig = scope.ServiceProvider.GetRequiredService<SchemaRegistryConfig>();
 
                 //var avroSerializerConfig = new Confluent.SchemaRegistry.Serdes.AvroSerializerConfig
                 //{
@@ -72,7 +52,8 @@ namespace Moonlay.MCService
                 //    AutoRegisterSchemas = true
                 //};
 
-                using var schemaRegistry = new CachedSchemaRegistryClient(schemaRegistryConfig);
+                var schemaRegistry = scope.ServiceProvider.GetRequiredService<ISchemaRegistryClient>();
+
                 using var c = new ConsumerBuilder<string, MessageTypes.LogMessage>(consumerConfig)
                     .SetKeyDeserializer(new AvroDeserializer<string>(schemaRegistry).AsSyncOverAsync())
                     .SetValueDeserializer(new AvroDeserializer<MessageTypes.LogMessage>(schemaRegistry).AsSyncOverAsync())

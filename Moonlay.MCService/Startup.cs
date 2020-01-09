@@ -2,6 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Confluent.Kafka;
+using Confluent.SchemaRegistry;
+using Confluent.SchemaRegistry.Serdes;
 using GraphQL;
 using GraphQL.Http;
 using GraphQL.Server;
@@ -52,8 +55,51 @@ namespace Moonlay.MCService
 
             // AddGraphQL(services);
 
+            ConfigureKafka(services);
+        }
+
+        private void ConfigureKafka(IServiceCollection services)
+        {
             services.AddHostedService<KafkaConsumersHosted>();
-            // services.AddScoped<IScopedProcessingService, ScopedProcessingService>();
+            services.AddSingleton(c => new ConsumerConfig
+            {
+                GroupId = "test-consumer-group",
+                BootstrapServers = "192.168.99.100:9092",
+                // Note: The AutoOffsetReset property determines the start offset in the event
+                // there are not yet any committed offsets for the consumer group for the
+                // topic/partitions of interest. By default, offsets are committed
+                // automatically, so in this example, consumption will only start from the
+                // earliest message in the topic 'my-topic' the first time you run the program.
+                AutoOffsetReset = AutoOffsetReset.Earliest
+            });
+
+            services.AddSingleton(c => new SchemaRegistryConfig
+            {
+                Url = "192.168.99.100:8081",
+                // Note: you can specify more than one schema registry url using the
+                // schema.registry.url property for redundancy (comma separated list). 
+                // The property name is not plural to follow the convention set by
+                // the Java implementation.
+                // optional schema registry client properties:
+                RequestTimeoutMs = 5000,
+                MaxCachedSchemas = 10
+            });
+
+            services.AddSingleton(c => new ProducerConfig() { BootstrapServers = "192.168.99.100:9092" });
+            services.AddSingleton<ISchemaRegistryClient>(c => new CachedSchemaRegistryClient(c.GetRequiredService<SchemaRegistryConfig>()));
+            
+            // NewCustomerTopic
+            services.AddSingleton(c =>
+            {
+                var config = c.GetRequiredService<ProducerConfig>();
+                var schemaRegistry = c.GetRequiredService<ISchemaRegistryClient>();
+                var producer = new ProducerBuilder<string, MessageTypes.LogMessage>(config)
+                .SetKeySerializer(new AvroSerializer<string>(schemaRegistry))
+                .SetValueSerializer(new AvroSerializer<MessageTypes.LogMessage>(schemaRegistry))
+                .Build();
+
+                return producer;
+            });
         }
 
         private void AddRestFullServices(IServiceCollection services)

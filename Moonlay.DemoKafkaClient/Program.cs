@@ -44,6 +44,8 @@ namespace Moonlay.DemoKafkaClient
 
                 var dr = await p.ProduceAsync("newCustomerTopic", new Message<string, MessageTypes.LogMessage> { Key = Guid.NewGuid().ToString(), Value = message });
 
+                p.Flush();
+
                 Console.WriteLine($"Delivered '{dr.Value}' to '{dr.TopicPartitionOffset}'");
             }
             catch (ProduceException<Null, string> e)
