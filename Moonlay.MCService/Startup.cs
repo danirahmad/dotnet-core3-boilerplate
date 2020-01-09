@@ -1,29 +1,18 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Confluent.Kafka;
 using Confluent.SchemaRegistry;
-using Confluent.SchemaRegistry.Serdes;
 using GraphQL;
-using GraphQL.Http;
 using GraphQL.Server;
-using GraphQL.Server.Ui.Playground;
 using GraphQL.Types;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using Moonlay.MCService.Customers;
 using Moonlay.MCService.Customers.GraphQL;
 using Moonlay.MCService.Db;
-using Swashbuckle.AspNetCore.Swagger;
+using Moonlay.MCService.Producers;
 
 namespace Moonlay.MCService
 {
@@ -71,24 +60,10 @@ namespace Moonlay.MCService
                 RequestTimeoutMs = 5000,
                 MaxCachedSchemas = 10
             });
-
             services.AddSingleton<ISchemaRegistryClient>(c => new CachedSchemaRegistryClient(c.GetRequiredService<SchemaRegistryConfig>()));
-
-
             services.AddSingleton(c => new ProducerConfig() { BootstrapServers = "192.168.99.100:9092" });
-            
-            // NewCustomerTopic
-            services.AddSingleton(c =>
-            {
-                var config = c.GetRequiredService<ProducerConfig>();
-                var schemaRegistry = c.GetRequiredService<ISchemaRegistryClient>();
-                var producer = new ProducerBuilder<string, MessageTypes.LogMessage>(config)
-                .SetKeySerializer(new AvroSerializer<string>(schemaRegistry))
-                .SetValueSerializer(new AvroSerializer<MessageTypes.LogMessage>(schemaRegistry))
-                .Build();
 
-                return producer;
-            });
+            services.AddSingleton<INewCustomerProducer, NewCustomerProducer>();
         }
 
         private void ConfigureRestFullServices(IServiceCollection services)

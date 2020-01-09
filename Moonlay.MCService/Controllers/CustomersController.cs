@@ -9,6 +9,8 @@ using Moonlay.MCService.Customers;
 using Microsoft.Extensions.DependencyInjection;
 using Confluent.SchemaRegistry;
 using Confluent.SchemaRegistry.Serdes;
+using Microsoft.Extensions.Logging;
+using Moonlay.MCService.Producers;
 
 namespace Moonlay.MCService.Controllers
 {
@@ -17,20 +19,21 @@ namespace Moonlay.MCService.Controllers
     public class CustomersController : ControllerBase
     {
         private readonly ICustomerService _customerService;
-        private readonly IProducer<string, MessageTypes.LogMessage> _NewCustomerProducer;
+        private readonly ILogger<CustomersController> _logger;
+        private readonly INewCustomerProducer _NewCustomerProducer;
 
-        public CustomersController(ICustomerService customerService, IServiceProvider provider)
+        public CustomersController(ICustomerService customerService, IServiceProvider provider, ILogger<CustomersController> logger)
         {
             _customerService = customerService;
-
-            _NewCustomerProducer = provider.GetRequiredService<IProducer<string, MessageTypes.LogMessage>>();
+            _logger = logger;
+            _NewCustomerProducer = provider.GetRequiredService<INewCustomerProducer>();
         }
 
         [HttpGet()]
         public async Task<ActionResult<List<CustomerDto>>> Get()
         {
             var result = (await _customerService.SearchAsync())
-                .Select(o=>new CustomerDto(o))
+                .Select(o => new CustomerDto(o))
                 .ToList();
 
             return Ok(result);
@@ -39,8 +42,6 @@ namespace Moonlay.MCService.Controllers
         [HttpPost]
         public async Task<ActionResult<CustomerDto>> Post(NewCustomerDto form)
         {
-            var producer = _NewCustomerProducer;
-
             var message = new MessageTypes.LogMessage
             {
                 IP = "192.168.0.1",
@@ -49,11 +50,7 @@ namespace Moonlay.MCService.Controllers
                 Tags = new Dictionary<string, string> { { "location", "CA" } }
             };
 
-            var dr = await producer.ProduceAsync("newCustomerTopic", new Message<string, MessageTypes.LogMessage> { Key = Guid.NewGuid().ToString(), Value = message });
-
-            producer.Flush();
-
-            Console.WriteLine($"Delivered '{dr.Value}' to '{dr.TopicPartitionOffset}'");
+            await _NewCustomerProducer.Publish(Guid.NewGuid().ToString(), message);
 
             return Ok(new CustomerDto(new Models.Customer(Guid.NewGuid()) { FirstName = form.FirstName, LastName = form.LastName }));
         }

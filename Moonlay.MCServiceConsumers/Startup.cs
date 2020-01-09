@@ -1,18 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Confluent.Kafka;
-using Confluent.Kafka.SyncOverAsync;
 using Confluent.SchemaRegistry;
-using Confluent.SchemaRegistry.Serdes;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Moonlay.MCService;
+using Moonlay.MCServiceConsumers.Consumers;
 
 namespace Moonlay.MCServiceConsumers
 {
@@ -30,7 +24,13 @@ namespace Moonlay.MCServiceConsumers
         {
             services.AddRazorPages();
 
-            services.AddHostedService<KafkaConsumersHosted>();
+            ConfigureKafka(services);
+
+        }
+
+        private void ConfigureKafka(IServiceCollection services)
+        {
+            services.AddHostedService<HostedConsumers>();
             services.AddSingleton(c => new ConsumerConfig
             {
                 GroupId = "test-consumer-group",
@@ -56,13 +56,7 @@ namespace Moonlay.MCServiceConsumers
             });
 
             services.AddSingleton<ISchemaRegistryClient>(c => new CachedSchemaRegistryClient(c.GetRequiredService<SchemaRegistryConfig>()));
-
-            services.AddSingleton<IConsumer<string, MessageTypes.LogMessage>>(c => new ConsumerBuilder<string, MessageTypes.LogMessage>(c.GetRequiredService<ConsumerConfig>())
-                    .SetKeyDeserializer(new AvroDeserializer<string>(c.GetRequiredService<ISchemaRegistryClient>()).AsSyncOverAsync())
-                    .SetValueDeserializer(new AvroDeserializer<MessageTypes.LogMessage>(c.GetRequiredService<ISchemaRegistryClient>()).AsSyncOverAsync())
-                    .SetErrorHandler((_, e) => Console.WriteLine($"Error: {e.Reason}"))
-                    .Build());
-
+            services.AddScoped<INewCustomerConsumer, NewCustomerConsumer>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
