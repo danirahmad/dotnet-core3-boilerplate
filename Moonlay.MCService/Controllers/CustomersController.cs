@@ -9,7 +9,6 @@ using Moonlay.MCService.Customers;
 using Microsoft.Extensions.DependencyInjection;
 using Confluent.SchemaRegistry;
 using Confluent.SchemaRegistry.Serdes;
-using Moonlay.MCService.KafkaStream;
 
 namespace Moonlay.MCService.Controllers
 {

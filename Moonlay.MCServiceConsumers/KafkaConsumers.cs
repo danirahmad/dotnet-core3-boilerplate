@@ -9,13 +9,14 @@ using Confluent.SchemaRegistry.Serdes;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Moonlay.MCService.KafkaStream.Topics;
 
 namespace Moonlay.MCService
 {
     public class KafkaConsumersHosted : IHostedService, IDisposable
     {
         private readonly ILogger<KafkaConsumersHosted> _logger;
+
+        const string TOPIC_NEWCUSTOMER = "newCustomerTopic";
 
         public KafkaConsumersHosted(IServiceProvider services,
             ILogger<KafkaConsumersHosted> logger)
@@ -54,13 +55,9 @@ namespace Moonlay.MCService
 
                 var schemaRegistry = scope.ServiceProvider.GetRequiredService<ISchemaRegistryClient>();
 
-                using var c = new ConsumerBuilder<string, MessageTypes.LogMessage>(consumerConfig)
-                    .SetKeyDeserializer(new AvroDeserializer<string>(schemaRegistry).AsSyncOverAsync())
-                    .SetValueDeserializer(new AvroDeserializer<MessageTypes.LogMessage>(schemaRegistry).AsSyncOverAsync())
-                    .SetErrorHandler((_, e) => Console.WriteLine($"Error: {e.Reason}"))
-                    .Build();
+                var newCustomerConsumer = scope.ServiceProvider.GetRequiredService<IConsumer<string, MessageTypes.LogMessage>>();
 
-                c.Subscribe(new[] { NewCustomerTopic.TOPIC_NAME });
+                newCustomerConsumer.Subscribe(new[] { TOPIC_NEWCUSTOMER });
 
                 CancellationTokenSource cts = new CancellationTokenSource();
                 Console.CancelKeyPress += (_, e) =>
@@ -75,12 +72,12 @@ namespace Moonlay.MCService
                     {
                         try
                         {
-                            var cr = c.Consume(cts.Token);
+                            var cr = newCustomerConsumer.Consume(cts.Token);
                             _logger.LogInformation($"Consumed message '{cr.Message.Key}' '{Newtonsoft.Json.JsonConvert.SerializeObject(cr.Message.Value)}' at: '{cr.TopicPartitionOffset}'.");
 
                             switch (cr.Topic)
                             {
-                                case NewCustomerTopic.TOPIC_NAME: 
+                                case TOPIC_NEWCUSTOMER: 
                                     // PUT New Customer Handler here
                                     break;
                             }
@@ -95,7 +92,7 @@ namespace Moonlay.MCService
                 catch (OperationCanceledException)
                 {
                     // Ensure the consumer leaves the group cleanly and final offsets are committed.
-                    c.Close();
+                    newCustomerConsumer.Close();
                 }
             }
 
