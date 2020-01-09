@@ -17,16 +17,12 @@ namespace Moonlay.MCService.Controllers
     public class CustomersController : ControllerBase
     {
         private readonly ICustomerService _customerService;
-        private readonly ProducerConfig _kafkaProducerConfig;
-        private readonly ISchemaRegistryClient _kafkaSchemaRegistry;
         private readonly IProducer<string, MessageTypes.LogMessage> _NewCustomerProducer;
 
         public CustomersController(ICustomerService customerService, IServiceProvider provider)
         {
             _customerService = customerService;
 
-            _kafkaProducerConfig = provider.GetService<ProducerConfig>();
-            _kafkaSchemaRegistry = provider.GetService<ISchemaRegistryClient>();
             _NewCustomerProducer = provider.GetRequiredService<IProducer<string, MessageTypes.LogMessage>>();
         }
 
