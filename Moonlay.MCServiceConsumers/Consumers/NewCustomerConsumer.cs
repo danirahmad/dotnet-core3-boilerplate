@@ -35,7 +35,7 @@ namespace Moonlay.MCServiceConsumers.Consumers
         {
             try
             {
-                Consumer.Subscribe(new[] { TopicName });
+                Consumer.Subscribe(TopicName);
 
                 while (!cancellationToken.IsCancellationRequested)
                 {
