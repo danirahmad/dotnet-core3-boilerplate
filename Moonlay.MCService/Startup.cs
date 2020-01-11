@@ -156,16 +156,18 @@ namespace Moonlay.MCService
             // use graphql-playground at default url /ui/playground
             // app.UseGraphQLPlayground(new GraphQLPlaygroundOptions());
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-                endpoints.MapGrpcService<GreeterService>();
-            });
-
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Test API V1");
+            });
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+
+                // ENABLE GRPC
+                endpoints.MapGrpcService<GreeterService>();
             });
         }
     }
