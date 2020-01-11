@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Moonlay.MCService\Moonlay.MCService.csproj" />
+    <ProjectReference Include="..\Moonlay.MCService\Moonlay.MCServiceWebApi.csproj" />
   </ItemGroup>
 
 </Project>

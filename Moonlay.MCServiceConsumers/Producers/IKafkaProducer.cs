@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Moonlay.MCService.Producers
 {
-    internal interface IKafkaProducer<TKey, TValue>
+    public interface IKafkaProducer<TKey, TValue>
     {
         IProducer<TKey, TValue> Producer { get; }
 

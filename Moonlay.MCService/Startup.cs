@@ -12,7 +12,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Moonlay.MCService.Customers.GraphQL;
 using Moonlay.MCService.Db;
-using Moonlay.MCService.Producers;
+using Moonlay.MCService.Consumers;
+using Moonlay.MCServiceGRPC;
 
 namespace Moonlay.MCService
 {
@@ -39,6 +40,7 @@ namespace Moonlay.MCService
             services.AddTransient<Customers.ICustomerService, Customers.Service>();
 
             services.AddHttpContextAccessor();
+            services.AddGrpc();
 
             ConfigureRestFullServices(services);
 
@@ -61,9 +63,22 @@ namespace Moonlay.MCService
                 MaxCachedSchemas = 10
             });
             services.AddSingleton<ISchemaRegistryClient>(c => new CachedSchemaRegistryClient(c.GetRequiredService<SchemaRegistryConfig>()));
-            services.AddSingleton(c => new ProducerConfig() { BootstrapServers = "192.168.99.100:9092" });
 
-            services.AddSingleton<INewCustomerProducer, NewCustomerProducer>();
+
+            services.AddSingleton(c => new ConsumerConfig
+            {
+                GroupId = "test-consumer-group",
+                BootstrapServers = "192.168.99.100:9092",
+                // Note: The AutoOffsetReset property determines the start offset in the event
+                // there are not yet any committed offsets for the consumer group for the
+                // topic/partitions of interest. By default, offsets are committed
+                // automatically, so in this example, consumption will only start from the
+                // earliest message in the topic 'my-topic' the first time you run the program.
+                AutoOffsetReset = AutoOffsetReset.Earliest
+            });
+            services.AddScoped<INewCustomerConsumer, NewCustomerConsumer>();
+
+            services.AddHostedService<HostedConsumers>();
         }
 
         private void ConfigureRestFullServices(IServiceCollection services)
@@ -144,6 +159,7 @@ namespace Moonlay.MCService
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapGrpcService<GreeterService>();
             });
 
             app.UseSwagger();

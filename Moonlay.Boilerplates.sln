@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29519.181
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Moonlay.MCService", "Moonlay.MCService\Moonlay.MCService.csproj", "{FBD5F60E-CA86-4127-87D1-4C1DF9B49547}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Moonlay.MCServiceWebApi", "Moonlay.MCService\Moonlay.MCServiceWebApi.csproj", "{FBD5F60E-CA86-4127-87D1-4C1DF9B49547}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Moonlay.MCService.UnitTests", "Moonlay.MCService.UnitTests\Moonlay.MCService.UnitTests.csproj", "{431336DC-54F1-44D0-9CCF-389E3CB9CDF8}"
 EndProject
@@ -18,7 +18,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		docker-compose.yml = docker-compose.yml
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Moonlay.MCServiceConsumers", "Moonlay.MCServiceConsumers\Moonlay.MCServiceConsumers.csproj", "{C88BE1EE-210D-4AA4-8BD5-8D07A2E0BD1D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Moonlay.MCServiceWebApp", "Moonlay.MCServiceConsumers\Moonlay.MCServiceWebApp.csproj", "{C88BE1EE-210D-4AA4-8BD5-8D07A2E0BD1D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

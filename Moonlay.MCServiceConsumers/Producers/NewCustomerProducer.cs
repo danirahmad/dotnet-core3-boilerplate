@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Moonlay.MCService.Producers
 {
-    internal interface INewCustomerProducer : IKafkaProducer<string, MessageTypes.LogMessage> { }
+    public interface INewCustomerProducer : IKafkaProducer<string, MessageTypes.LogMessage> { }
 
     internal class NewCustomerProducer : INewCustomerProducer
     {

@@ -10,7 +10,7 @@ using Confluent.SchemaRegistry.Serdes;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Moonlay.MCServiceConsumers.Consumers;
+using Moonlay.MCService.Consumers;
 
 namespace Moonlay.MCService
 {
