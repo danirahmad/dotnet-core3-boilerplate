@@ -4,6 +4,7 @@ using Confluent.SchemaRegistry;
 using Confluent.SchemaRegistry.Serdes;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Moonlay.Confluent.Kafka;
 using System;
 using System.Threading;
 using System.Threading.Tasks;

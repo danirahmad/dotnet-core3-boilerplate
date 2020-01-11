@@ -20,6 +20,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Moonlay.MCServiceWebApp", "Moonlay.MCServiceConsumers\Moonlay.MCServiceWebApp.csproj", "{C88BE1EE-210D-4AA4-8BD5-8D07A2E0BD1D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Moonlay.Confluent.Kafka", "Moonlay.Confluent.Kafka\Moonlay.Confluent.Kafka.csproj", "{FCED9F44-3966-4E1A-AE45-408185C59C8B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -102,6 +104,18 @@ Global
 		{C88BE1EE-210D-4AA4-8BD5-8D07A2E0BD1D}.Release|x64.Build.0 = Release|Any CPU
 		{C88BE1EE-210D-4AA4-8BD5-8D07A2E0BD1D}.Release|x86.ActiveCfg = Release|Any CPU
 		{C88BE1EE-210D-4AA4-8BD5-8D07A2E0BD1D}.Release|x86.Build.0 = Release|Any CPU
+		{FCED9F44-3966-4E1A-AE45-408185C59C8B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FCED9F44-3966-4E1A-AE45-408185C59C8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FCED9F44-3966-4E1A-AE45-408185C59C8B}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{FCED9F44-3966-4E1A-AE45-408185C59C8B}.Debug|x64.Build.0 = Debug|Any CPU
+		{FCED9F44-3966-4E1A-AE45-408185C59C8B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{FCED9F44-3966-4E1A-AE45-408185C59C8B}.Debug|x86.Build.0 = Debug|Any CPU
+		{FCED9F44-3966-4E1A-AE45-408185C59C8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FCED9F44-3966-4E1A-AE45-408185C59C8B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FCED9F44-3966-4E1A-AE45-408185C59C8B}.Release|x64.ActiveCfg = Release|Any CPU
+		{FCED9F44-3966-4E1A-AE45-408185C59C8B}.Release|x64.Build.0 = Release|Any CPU
+		{FCED9F44-3966-4E1A-AE45-408185C59C8B}.Release|x86.ActiveCfg = Release|Any CPU
+		{FCED9F44-3966-4E1A-AE45-408185C59C8B}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

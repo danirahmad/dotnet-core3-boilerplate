@@ -1,16 +1,11 @@
 
-using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using Confluent.Kafka;
-using Confluent.Kafka.SyncOverAsync;
-using Confluent.SchemaRegistry;
-using Confluent.SchemaRegistry.Serdes;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Moonlay.MCService.Consumers;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Moonlay.MCService
 {

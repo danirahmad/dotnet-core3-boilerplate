@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Moonlay.MCService.Producers
+namespace Moonlay.Confluent.Kafka
 {
     public interface IKafkaProducer<TKey, TValue>
     {
