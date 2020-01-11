@@ -10,9 +10,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Moonlay.MCService.Consumers;
 using Moonlay.MCService.Customers.GraphQL;
 using Moonlay.MCService.Db;
-using Moonlay.MCService.Consumers;
 using Moonlay.MCServiceGRPC;
 
 namespace Moonlay.MCService
@@ -64,7 +64,6 @@ namespace Moonlay.MCService
             });
             services.AddSingleton<ISchemaRegistryClient>(c => new CachedSchemaRegistryClient(c.GetRequiredService<SchemaRegistryConfig>()));
 
-
             services.AddSingleton(c => new ConsumerConfig
             {
                 GroupId = "test-consumer-group",
@@ -103,7 +102,6 @@ namespace Moonlay.MCService
                         // Url = new Uri("www.dotnetdetail.net", UriKind.RelativeOrAbsolute)
                     },
                 });
-
             });
         }
 
@@ -141,20 +139,25 @@ namespace Moonlay.MCService
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                //app.UseDatabaseErrorPage();
+            }
+            else
+            {
+                app.UseExceptionHandler("/Error");
+                app.UseHsts();
             }
 
             app.UseHttpsRedirection();
+            app.UseStaticFiles();
+            // app.UseCookiePolicy();
 
             app.UseRouting();
+            // app.UseRequestLocalization();
+            // app.UseCors();
 
+            app.UseAuthentication();
             app.UseAuthorization();
-
-            // add http for Schema at default url /graphql
-            // app.UseGraphQL<ISchema>();
-
-            // if (env.IsDevelopment())
-            // use graphql-playground at default url /ui/playground
-            // app.UseGraphQLPlayground(new GraphQLPlaygroundOptions());
+            // app.UseSession();
 
             app.UseSwagger();
             app.UseSwaggerUI(c =>
@@ -162,13 +165,28 @@ namespace Moonlay.MCService
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Test API V1");
             });
 
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-
-                // ENABLE GRPC
-                endpoints.MapGrpcService<GreeterService>();
             });
+
+            app.Map("/grpc", c => {
+                c.UseRouting();
+                c.UseEndpoints(ep => {
+                    // ENABLE GRPC
+                    ep.MapGrpcService<GreeterService>();
+                });
+            });
+
+           
+
+            // add http for Schema at default url /graphql
+            // app.UseGraphQL<ISchema>();
+
+            // if (env.IsDevelopment())
+            // use graphql-playground at default url /ui/playground
+            // app.UseGraphQLPlayground(new GraphQLPlaygroundOptions());
         }
     }
 }
