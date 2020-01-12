@@ -14,15 +14,9 @@ namespace Moonlay.MCService.Models
         [MaxLength(64)]
         public string LastName { get; set; }
 
-        public override bool IsHasTestMode()
-        {
-            return true;
-        }
+        public override bool IsHasTestMode() => true;
 
-        public override bool IsSoftDelete()
-        {
-            return true;
-        }
+        public override bool IsSoftDelete() => true;
 
         public override object ToTrail()
         {
@@ -43,6 +37,9 @@ namespace Moonlay.MCService.Models
 
         public CustomerTrail(Customer entity) : base(entity)
         {
+            this.CustomerId = entity.Id;
+            this.FirstName = entity.FirstName;
+            this.LastName = entity.LastName;
         }
 
         public Guid CustomerId { get; set; }

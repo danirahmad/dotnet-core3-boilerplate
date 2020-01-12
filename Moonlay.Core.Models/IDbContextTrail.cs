@@ -15,8 +15,6 @@ namespace Moonlay.Core.Models
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 
-        //EntityEntry Add(object entity);
-
         Task AddRangeAsync(IEnumerable<object> entities, CancellationToken cancellationToken = default);
     }
 }
