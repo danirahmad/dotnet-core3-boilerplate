@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Moonlay.Core.Models;
 using Moonlay.WebApp.Producers;
 
 namespace Moonlay.WebApp
@@ -21,6 +22,10 @@ namespace Moonlay.WebApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddHttpContextAccessor();
+
+            services.AddScoped<ISignInService, SignInService>();
+
             services.AddRazorPages();
 
             ConfigureKafka(services);

@@ -2,7 +2,6 @@
 using Confluent.Kafka.SyncOverAsync;
 using Confluent.SchemaRegistry;
 using Confluent.SchemaRegistry.Serdes;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Moonlay.Confluent.Kafka;
 using Moonlay.MCServiceWebApi.Customers;
@@ -12,13 +11,13 @@ using System.Threading.Tasks;
 
 namespace Moonlay.MCServiceWebApi.Consumers
 {
-    public interface INewCustomerConsumer : IKafkaConsumer<string, Moonlay.Topics.Customers.NewCustomerTopic> { }
+    public interface INewCustomerConsumer : IKafkaConsumer<Topics.MessageHeader, Moonlay.Topics.Customers.NewCustomerTopic> { }
 
     public class NewCustomerConsumer : INewCustomerConsumer
     {
         private readonly ILogger<NewCustomerConsumer> _logger;
 
-        public IConsumer<string, Moonlay.Topics.Customers.NewCustomerTopic> Consumer { get; }
+        public IConsumer<Topics.MessageHeader, Moonlay.Topics.Customers.NewCustomerTopic> Consumer { get; }
 
         private readonly ICustomerService _service;
 
@@ -27,8 +26,8 @@ namespace Moonlay.MCServiceWebApi.Consumers
             _logger = logger;
 
             // register the consumer
-            this.Consumer = new ConsumerBuilder<string, Moonlay.Topics.Customers.NewCustomerTopic>(config)
-                .SetKeyDeserializer(new AvroDeserializer<string>(schemaRegistryClient).AsSyncOverAsync())
+            this.Consumer = new ConsumerBuilder<Topics.MessageHeader, Moonlay.Topics.Customers.NewCustomerTopic>(config)
+                .SetKeyDeserializer(new AvroDeserializer<Topics.MessageHeader>(schemaRegistryClient).AsSyncOverAsync())
                 .SetValueDeserializer(new AvroDeserializer<Moonlay.Topics.Customers.NewCustomerTopic>(schemaRegistryClient).AsSyncOverAsync())
                 .SetErrorHandler((_, e) => Console.WriteLine($"Error: {e.Reason}"))
                 .Build();
@@ -36,7 +35,7 @@ namespace Moonlay.MCServiceWebApi.Consumers
             _service = service;
         }
 
-        public string TopicName => "new-customer-topic";
+        public string TopicName => "new-customer-topic2";
 
         public async Task Run(CancellationToken cancellationToken = default)
         {
@@ -50,9 +49,14 @@ namespace Moonlay.MCServiceWebApi.Consumers
                     {
                         var cr = Consumer.Consume(cancellationToken);
 
-                        await _service.NewCustomerAsync(cr.Value.FirstName, cr.Value.LastName);
+                        await _service.NewCustomerAsync(cr.Value.FirstName, cr.Value.LastName, ety =>
+                        {
+                            ety.CreatedBy = cr.Key.CurrentUser;
+                            ety.Tested = cr.Key.IsCurrentUserDemo;
+                            ety.UpdatedBy = cr.Key.CurrentUser;
+                        });
 
-                        _logger.LogInformation($"Consumed message '{cr.Message.Key}' '{Newtonsoft.Json.JsonConvert.SerializeObject(cr.Message.Value)}' at: '{cr.TopicPartitionOffset}'.");
+                        _logger.LogInformation($"Consumed message '{Newtonsoft.Json.JsonConvert.SerializeObject(cr.Message.Key)}' '{Newtonsoft.Json.JsonConvert.SerializeObject(cr.Message.Value)}' at: '{cr.TopicPartitionOffset}'.");
 
                     }
                     catch (ConsumeException e)

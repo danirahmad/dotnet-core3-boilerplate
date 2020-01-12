@@ -6,8 +6,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Moonlay.Confluent.Kafka\Moonlay.Confluent.Kafka.csproj" />
-    <ProjectReference Include="..\Moonlay.DemoKafkaTopics\Moonlay.DemoKafkaTopics.csproj" />
-    <ProjectReference Include="..\Moonlay.KafkaTopics.Customers\Moonlay.Topics.Customers.csproj" />
+    <ProjectReference Include="..\Moonlay.Core.Models\Moonlay.Core.Models.csproj" />
+    <ProjectReference Include="..\Moonlay.Topics\Moonlay.Topics.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -34,6 +34,7 @@ namespace Moonlay.MCServiceWebApi
 
             services.AddDbContext<MyDbContext>(options => options.UseSqlServer(Configuration.GetSection("ConnectionStrings:Connection").Value));
             services.AddDbContext<MyDbTrailContext>(options => options.UseSqlServer(Configuration.GetSection("ConnectionStrings:ConnectionTrail").Value));
+
             services.AddScoped<IDbContext, MyDbContext>();
             services.AddScoped<IDbTrailContext, MyDbTrailContext>();
 
@@ -41,8 +42,6 @@ namespace Moonlay.MCServiceWebApi
             services.AddScoped<Customers.ICustomerRepository, Customers.Repository>();
             services.AddScoped<Customers.ICustomerService, Customers.Service>();
 
-            services.AddHttpContextAccessor();
-            services.AddGrpc();
 
             ConfigureRestFullServices(services);
 
@@ -51,6 +50,9 @@ namespace Moonlay.MCServiceWebApi
             ConfigureKafka(services);
 
             services.AddMetrics();
+
+            services.AddHttpContextAccessor();
+            services.AddGrpc();
         }
 
         private void ConfigureKafka(IServiceCollection services)

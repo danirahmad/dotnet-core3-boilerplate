@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Moonlay.Core.Models;
 using Moonlay.Topics.Customers;
 using Moonlay.WebApp.Producers;
 using System;
@@ -25,10 +26,12 @@ namespace Moonlay.WebApp
         public NewCustomerForm Form { get; set; }
 
         private readonly INewCustomerProducer _producer;
+        private readonly ISignInService _signIn;
 
-        public CreateModel(INewCustomerProducer newCustomerProducer)
+        public CreateModel(INewCustomerProducer newCustomerProducer, ISignInService signIn)
         {
             _producer = newCustomerProducer;
+            _signIn = signIn;
         }
 
         public Task OnGet()
@@ -44,7 +47,19 @@ namespace Moonlay.WebApp
                 return Page();
             }
 
-            await _producer.Publish(Guid.NewGuid().ToString(), new NewCustomerTopic { FirstName = this.Form.FirstName, LastName = this.Form.LastName });
+            await _producer.Publish(new Topics.MessageHeader
+            {
+                Token = Guid.NewGuid().ToString(),
+                AppOrigin = "Moonlay.WebApp",
+                Timestamp = DateTime.Now.ToString("s"),
+                CurrentUser = _signIn.CurrentUser,
+                IsCurrentUserDemo = _signIn.Demo
+            },
+            new NewCustomerTopic
+            {
+                FirstName = this.Form.FirstName,
+                LastName = this.Form.LastName
+            });
 
             return RedirectToPage("./Index");
         }

@@ -37,24 +37,32 @@ namespace Moonlay.Core.Models
             {
                 if (item.State == EntityState.Added)
                 {
-                    item.Entity.CreatedAt = now;
-                    item.Entity.CreatedBy = currentUser;
-                    item.Entity.UpdatedAt = now;
-                    item.Entity.UpdatedBy = currentUser;
-                    item.Entity.Deleted = false;
+                    if (string.IsNullOrEmpty(item.Entity.CreatedBy))
+                        item.Entity.Tested = item.Entity.IsHasTestMode() ? isDemo : false;
 
-                    item.Entity.Tested = item.Entity.IsHasTestMode() ? isDemo : false;
+                    item.Entity.CreatedAt = now;
+                    if (string.IsNullOrEmpty(item.Entity.CreatedBy))
+                        item.Entity.CreatedBy = currentUser;
+
+                    item.Entity.UpdatedAt = now;
+                    if (string.IsNullOrEmpty(item.Entity.UpdatedBy))
+                        item.Entity.UpdatedBy = currentUser;
+
+                    item.Entity.Deleted = false;
                 }
                 else if (item.State == EntityState.Modified)
                 {
                     item.Entity.UpdatedAt = now;
-                    item.Entity.UpdatedBy = currentUser;
+                    if (string.IsNullOrEmpty(item.Entity.UpdatedBy))
+                        item.Entity.UpdatedBy = currentUser;
                 }
                 else if (item.State == EntityState.Deleted && item.Entity.IsSoftDelete())
                 {
                     item.Entity.Deleted = true;
                     item.Entity.UpdatedAt = now;
-                    item.Entity.UpdatedBy = currentUser;
+                    if (string.IsNullOrEmpty(item.Entity.UpdatedBy))
+                        item.Entity.UpdatedBy = currentUser; 
+
                     item.State = EntityState.Modified;
                 }
             });

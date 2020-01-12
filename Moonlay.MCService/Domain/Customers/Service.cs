@@ -23,7 +23,7 @@ namespace Moonlay.MCServiceWebApi.Customers
             await this._db.SaveChangesAsync();
         }
 
-        public async Task<Customer> NewCustomerAsync(string firstName, string lastName)
+        public async Task<Customer> NewCustomerAsync(string firstName, string lastName, Action<Customer> beforeSave = null)
         {
             if (string.IsNullOrEmpty(firstName))
             {
@@ -33,6 +33,8 @@ namespace Moonlay.MCServiceWebApi.Customers
             var newCustomerId = Guid.NewGuid();
 
             var customer = await this._customerRepo.StoreAsync(newCustomerId, firstName, lastName);
+
+            beforeSave?.Invoke(customer);
 
             await SaveChangesAsync();
 

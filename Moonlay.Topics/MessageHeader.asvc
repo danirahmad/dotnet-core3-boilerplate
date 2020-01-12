@@ -1,0 +1,27 @@
+{
+  "name": "MessageHeader",
+  "type": "record",
+  "namespace": "Moonlay.Topics",
+  "fields": [
+    {
+      "name": "Token",
+      "type": "string"
+    },
+    {
+      "name": "CurrentUser",
+      "type": "string"
+    },
+    {
+      "name": "IsCurrentUserDemo",
+      "type": "boolean"
+    },
+    {
+      "name": "AppOrigin",
+      "type": "string"
+    },
+    {
+      "name": "Timestamp",
+      "type": "string"
+    }
+  ]
+}
