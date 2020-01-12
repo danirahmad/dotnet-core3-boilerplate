@@ -84,6 +84,7 @@ namespace Moonlay.MCServiceWebApi
                 AutoOffsetReset = AutoOffsetReset.Earliest
             });
             services.AddScoped<INewCustomerConsumer, NewCustomerConsumer>();
+            services.AddScoped<IUpdateCustomerConsumer, UpdateCustomerConsumer>();
         }
 
         private void ConfigureRestFullServices(IServiceCollection services)

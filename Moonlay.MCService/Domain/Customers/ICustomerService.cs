@@ -13,7 +13,7 @@ namespace Moonlay.MCServiceWebApi.Customers
 
         Task<List<CustomerTrail>> LogsAsync(Guid id);
 
-        Task<Customer> UpdateProfileAsync(Guid id, string firstName, string lastName);
+        Task<Customer> UpdateProfileAsync(Guid id, string firstName, string lastName, Action<Customer> beforeSave = null);
     }
 
 }

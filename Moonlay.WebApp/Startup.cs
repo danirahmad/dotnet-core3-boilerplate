@@ -50,6 +50,7 @@ namespace Moonlay.WebApp
             services.AddSingleton<ISchemaRegistryClient>(c => new CachedSchemaRegistryClient(c.GetRequiredService<SchemaRegistryConfig>()));
             services.AddSingleton(c => new ProducerConfig() { BootstrapServers = "192.168.99.100:9092" });
             services.AddSingleton<INewCustomerProducer, NewCustomerProducer>();
+            services.AddSingleton<IUpdateCustomerProducer, UpdateCustomerProducer>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

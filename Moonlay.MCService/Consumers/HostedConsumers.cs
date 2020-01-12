@@ -35,10 +35,9 @@ namespace Moonlay.MCServiceWebApi
         {
             using (var scope = Services.CreateScope())
             {
-                var newCustomerConsumer = scope.ServiceProvider.GetRequiredService<INewCustomerConsumer>();
-
                 var tasks = new Task[] {
-                    newCustomerConsumer.Run(stoppingToken)
+                    scope.ServiceProvider.GetRequiredService<INewCustomerConsumer>().Run(stoppingToken),
+                    scope.ServiceProvider.GetRequiredService<IUpdateCustomerConsumer>().Run(stoppingToken)
                 };
 
                 Task.WaitAll(tasks);

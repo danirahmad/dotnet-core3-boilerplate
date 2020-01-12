@@ -60,13 +60,15 @@ namespace Moonlay.MCServiceWebApi.Customers
             return Task.FromResult(logs);
         }
 
-        public async Task<Customer> UpdateProfileAsync(Guid id, string firstName, string lastName)
+        public async Task<Customer> UpdateProfileAsync(Guid id, string firstName, string lastName, Action<Customer> beforeSave = null)
         {
             var customer = _customerRepo.With(id);
             customer.FirstName = firstName;
             customer.LastName = lastName;
 
             await _customerRepo.UpdateAsync(customer);
+
+            beforeSave?.Invoke(customer);
 
             await SaveChangesAsync();
 

@@ -1,0 +1,19 @@
+{
+  "name": "UpdateCustomerTopic",
+  "type": "record",
+  "namespace": "Moonlay.Topics.Customers",
+  "fields": [
+    {
+      "name": "CustomerId",
+      "type": "string"
+    },
+    {
+      "name": "FirstName",
+      "type": "string"
+    },
+    {
+      "name": "LastName",
+      "type": "string"
+    }
+  ]
+}
