@@ -8,7 +8,7 @@ namespace Moonlay.Core.Models
 {
     public static class ModelBuilderHelper
     {
-        public static void SetGlobalQuery<T>(this Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder<T> etb) where T : Entity
+        public static void DefaultEntity<T>(this Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder<T> etb) where T : Entity
         {
             etb.HasKey(e => e.Id);
             etb.HasQueryFilter(e => !e.Deleted);

@@ -6,7 +6,7 @@ namespace Moonlay.MCServiceWebApi.Db
 {
     public class MyDbContext : MoonlayDbContext
     {
-        public MyDbContext(DbContextOptions options, IDbTrailContext trailContext, ISignInService signInService) : base(options, trailContext, signInService)
+        public MyDbContext(DbContextOptions<MyDbContext> options, IDbTrailContext trailContext, ISignInService signInService) : base(options, trailContext, signInService)
         {
         }
 
@@ -16,7 +16,7 @@ namespace Moonlay.MCServiceWebApi.Db
         {
             modelBuilder.Entity<Customer>(etb =>
             {
-                etb.SetGlobalQuery();
+                etb.DefaultEntity();
             });
 
             base.OnModelCreating(modelBuilder);
