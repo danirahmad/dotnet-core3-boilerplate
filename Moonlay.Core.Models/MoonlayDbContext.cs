@@ -33,7 +33,7 @@ namespace Moonlay.Core.Models
             var currentUser = _signInService.CurrentUser;
             var isDemo = _signInService.Demo;
 
-            foreach (var item in entities)
+            Parallel.ForEach(entities, item =>
             {
                 if (item.State == EntityState.Added)
                 {
@@ -43,10 +43,7 @@ namespace Moonlay.Core.Models
                     item.Entity.UpdatedBy = currentUser;
                     item.Entity.Deleted = false;
 
-                    if (item.Entity.IsHasTestMode())
-                        item.Entity.Tested = isDemo;
-                    else
-                        item.Entity.Tested = false;
+                    item.Entity.Tested = item.Entity.IsHasTestMode() ? isDemo : false;
                 }
                 else if (item.State == EntityState.Modified)
                 {
@@ -60,16 +57,13 @@ namespace Moonlay.Core.Models
                     item.Entity.UpdatedBy = currentUser;
                     item.State = EntityState.Modified;
                 }
-            }
+            });
 
-            var trailEntities = entities.Select(o => o.Entity.ToTrail());
-
-            foreach (var trail in trailEntities)
-            {
-                _trailContext.Add(trail);
-            }
+            var trailEntities = entities.Select(o => o.Entity.ToTrail()).ToList();
 
             var result = await base.SaveChangesAsync(cancellationToken);
+
+            await _trailContext.AddRangeAsync(trailEntities, cancellationToken);
 
             await _trailContext.SaveChangesAsync(cancellationToken);
 
