@@ -53,7 +53,7 @@ namespace Moonlay.Core.Models
                     item.Entity.UpdatedAt = now;
                     item.Entity.UpdatedBy = currentUser;
                 }
-                else if (item.Entity.IsSoftDelete())
+                else if (item.State == EntityState.Deleted && item.Entity.IsSoftDelete())
                 {
                     item.Entity.Deleted = true;
                     item.Entity.UpdatedAt = now;
