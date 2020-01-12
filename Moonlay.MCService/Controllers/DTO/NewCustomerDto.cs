@@ -1,4 +1,4 @@
-﻿namespace Moonlay.MCService.Controllers.DTO
+﻿namespace Moonlay.MCServiceWebApi.Controllers.DTO
 {
     public class NewCustomerDto
     {

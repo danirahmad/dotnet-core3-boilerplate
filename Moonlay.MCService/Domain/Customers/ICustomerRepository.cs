@@ -1,7 +1,7 @@
 using Moonlay.Core.Models;
-using Moonlay.MCService.Models;
+using Moonlay.MCServiceWebApi.Models;
 
-namespace Moonlay.MCService.Customers
+namespace Moonlay.MCServiceWebApi.Customers
 {
     public interface ICustomerRepository : IRepoEntity<Customer, CustomerTrail>
     {

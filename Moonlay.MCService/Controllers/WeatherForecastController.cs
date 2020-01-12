@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Moonlay.MCService.Models;
+using Moonlay.MCServiceWebApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Moonlay.MCService.Controllers
+namespace Moonlay.MCServiceWebApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]

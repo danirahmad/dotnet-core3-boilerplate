@@ -9,7 +9,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Moonlay.MCService.Consumers
+namespace Moonlay.MCServiceWebApi.Consumers
 {
     internal interface INewCustomerConsumer : IKafkaConsumer<string, MessageTypes.LogMessage> { }
     internal class NewCustomerConsumer : INewCustomerConsumer

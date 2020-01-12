@@ -1,9 +1,9 @@
-using Moonlay.MCService.Models;
+using Moonlay.MCServiceWebApi.Models;
 using Newtonsoft.Json;
 using System;
 using System.Runtime.Serialization;
 
-namespace Moonlay.MCService.Controllers.DTO
+namespace Moonlay.MCServiceWebApi.Controllers.DTO
 {
     [DataContract]
     public class CustomerDto

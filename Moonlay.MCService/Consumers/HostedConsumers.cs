@@ -2,12 +2,12 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Moonlay.MCService.Consumers;
+using Moonlay.MCServiceWebApi.Consumers;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Moonlay.MCService
+namespace Moonlay.MCServiceWebApi
 {
     public class HostedConsumers : IHostedService, IDisposable
     {

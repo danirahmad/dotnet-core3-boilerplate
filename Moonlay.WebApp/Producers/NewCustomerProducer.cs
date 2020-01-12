@@ -8,7 +8,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Moonlay.MCService.Producers
+namespace Moonlay.WebApp.Producers
 {
     public interface INewCustomerProducer : IKafkaProducer<string, MessageTypes.LogMessage> { }
 

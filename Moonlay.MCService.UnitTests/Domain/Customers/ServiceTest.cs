@@ -1,48 +1,12 @@
 using FluentAssertions;
-using Microsoft.EntityFrameworkCore;
-using Moonlay.Core.Models;
-using Moonlay.MCService.Customers;
-using Moonlay.MCService.Db;
+using Moonlay.MCServiceWebApi.Customers;
 using Moq;
 using System;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Moonlay.MCService.UnitTests.Domain.Customers
+namespace Moonlay.MCServiceWebApi.UnitTests.Domain.Customers
 {
-    class SignInServiceMock : ISignInService
-    {
-        public string CurrentUser => "demo";
-
-        public bool Demo => true;
-    }
-
-    internal class DbTestConnection : IDisposable
-    {
-        public DbTestConnection()
-        {
-            var options = new DbContextOptionsBuilder<MyDbContext>()
-                .UseInMemoryDatabase(databaseName: "moonlaydev")
-                .Options;
-
-            var optionsTrail = new DbContextOptionsBuilder<MyDbTrailContext>()
-                .UseInMemoryDatabase(databaseName: "moonlaydev_trail")
-                .Options;
-
-            DbTrail = new MyDbTrailContext(optionsTrail);
-            Db = new MyDbContext(options, DbTrail, new SignInServiceMock());
-        }
-
-        public MyDbContext Db { get; }
-        public MyDbTrailContext DbTrail { get; }
-
-        public void Dispose()
-        {
-            Db.Dispose();
-            DbTrail.Dispose();
-        }
-    }
-
     public class ServiceTest : IDisposable
     {
         private readonly MockRepository _MockRepo;
@@ -59,7 +23,7 @@ namespace Moonlay.MCService.UnitTests.Domain.Customers
             _MockRepo.VerifyAll();
         }
 
-        private MCService.Customers.Service CreateService(DbTestConnection db)
+        private MCServiceWebApi.Customers.Service CreateService(DbTestConnection db)
         {
             return new Service(_CustomerRepo.Object, db.Db);
         }

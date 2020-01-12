@@ -2,7 +2,7 @@ using Moonlay.Core.Models;
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Moonlay.MCService.Models
+namespace Moonlay.MCServiceWebApi.Models
 {
     public class Customer : Entity
     {

@@ -1,7 +1,7 @@
 using GraphQL.Types;
-using Moonlay.MCService.Models;
+using Moonlay.MCServiceWebApi.Models;
 
-namespace Moonlay.MCService.Customers.GraphQL
+namespace Moonlay.MCServiceWebApi.Customers.GraphQL
 {
     public class CustomerType : ObjectGraphType<Customer>
     {

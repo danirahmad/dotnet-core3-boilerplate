@@ -1,6 +1,6 @@
 using System;
 
-namespace Moonlay.MCService.Models
+namespace Moonlay.MCServiceWebApi.Models
 {
     public class WeatherForecast
     {

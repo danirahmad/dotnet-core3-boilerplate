@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Moonlay.MCService.Producers;
+using Moonlay.WebApp.Producers;
 
 namespace Moonlay.WebApp
 {

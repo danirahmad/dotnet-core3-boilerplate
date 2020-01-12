@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Http;
 using Moonlay.Core.Models;
 using System.Security.Claims;
 
-namespace Moonlay.MCService
+namespace Moonlay.MCServiceWebApi
 {
     internal class SignInService : ISignInService
     {

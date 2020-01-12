@@ -1,11 +1,11 @@
 using GraphQL;
 using GraphQL.Types;
-using Moonlay.MCService.Customers.GraphQL;
+using Moonlay.MCServiceWebApi.Customers.GraphQL;
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
 
-namespace Moonlay.MCService
+namespace Moonlay.MCServiceWebApi
 {
     public class DQuery : ObjectGraphType<object>
     {

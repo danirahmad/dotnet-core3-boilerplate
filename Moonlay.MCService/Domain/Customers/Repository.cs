@@ -1,10 +1,10 @@
 using Moonlay.Core.Models;
-using Moonlay.MCService.Models;
+using Moonlay.MCServiceWebApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Moonlay.MCService.Customers
+namespace Moonlay.MCServiceWebApi.Customers
 {
     internal class Repository : RepoEntity<Customer, CustomerTrail>, ICustomerRepository
     {
