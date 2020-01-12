@@ -7,4 +7,4 @@
 - Data Publishing: Kafka + Avro Message
 - GrahpQL (TBD)
 - Logging to logstash + elastic search (TBD)
-- Monitoring the service AppMetrics (https://www.app-metrics.io/getting-started/) + Grafana (TBD)
+- Monitoring the service AppMetrics (https://www.app-metrics.io/getting-started/)

@@ -25,6 +25,7 @@ namespace Moonlay.MCServiceConsumers
 
             ConfigureKafka(services);
 
+            services.AddMetrics();
         }
 
         private void ConfigureKafka(IServiceCollection services)

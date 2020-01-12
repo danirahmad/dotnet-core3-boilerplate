@@ -1,11 +1,8 @@
 #define HOSTING_OPTIONS
 
-using App.Metrics;
 using App.Metrics.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
 
 namespace Moonlay.MCService
 {
