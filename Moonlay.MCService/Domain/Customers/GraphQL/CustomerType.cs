@@ -12,7 +12,7 @@ namespace Moonlay.MCService.Customers.GraphQL
 
             Field(d => d.Id).Description("Customer Key");
             Field(d => d.FirstName, nullable: true).Description("Customer first name.");
-                        Field(d => d.LastName, nullable: true).Description("Customer last name.");
+            Field(d => d.LastName, nullable: true).Description("Customer last name.");
 
             Field(d => d.CreatedBy, nullable: true).Description("who is create the record");
             Field(d => d.CreatedAt, nullable: true).Description("when the record is created");

@@ -7,7 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Moonlay.MCService.Producers;
 
-namespace Moonlay.MCServiceConsumers
+namespace Moonlay.WebApp
 {
     public class Startup
     {

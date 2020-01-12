@@ -1,16 +1,9 @@
-using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
-using System.Linq;
+using Moonlay.Core.Models;
+using System.Security.Claims;
 
 namespace Moonlay.MCService
 {
-    public interface ISignInService
-    {
-        string CurrentUser { get; }
-
-        bool Demo { get; }
-    }
-
     internal class SignInService : ISignInService
     {
         private readonly IHttpContextAccessor _httpContext;

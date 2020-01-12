@@ -1,55 +1,35 @@
 using Microsoft.EntityFrameworkCore;
 using Moonlay.Core.Models;
 using Moonlay.MCService.Models;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Moonlay.MCService.Db
 {
-    public class MyDbContext : DbContext, IDbContext
+    public class MyDbContext : MoonlayDbContext
     {
-        private readonly IDbTrailContext _trailContext;
+        public MyDbContext(DbContextOptions options, IDbTrailContext trailContext, ISignInService signInService) : base(options, trailContext, signInService)
+        {
+        }
 
         public DbSet<Customer> Customers => Set<Customer>();
-
-        public MyDbContext(DbContextOptions<MyDbContext> options, IDbTrailContext trailContext) : base(options)
-        {
-            _trailContext = trailContext;
-        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Customer>(etb =>
             {
-                etb.HasKey(k => k.Id);
+                etb.SetGlobalQuery();
             });
-        }
 
-        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
-        {
-            var trailEntities = this.ChangeTracker.Entries<Entity>().Select(o => o.Entity.ToTrail());
-
-            foreach(var trail in trailEntities)
-            {
-                _trailContext.Add(trail);
-            }
-
-            var result = await base.SaveChangesAsync(cancellationToken);
-
-            await _trailContext.SaveChangesAsync(cancellationToken);
-
-            return result;
+            base.OnModelCreating(modelBuilder);
         }
     }
 
-    public class MyDbTrailContext : DbContext, IDbTrailContext
+    public class MyDbTrailContext : MoonlayDbTrailContext
     {
-        public DbSet<CustomerTrail> CustomerTrails => Set<CustomerTrail>();
-
         public MyDbTrailContext(DbContextOptions<MyDbTrailContext> options) : base(options)
         {
         }
+
+        public DbSet<CustomerTrail> CustomerTrails => Set<CustomerTrail>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

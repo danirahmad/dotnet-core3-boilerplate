@@ -3,13 +3,16 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Moonlay.Core.Models
 {
-    public interface IApplyAuditTrail<T>
+    public abstract class Entity
     {
-        T ToTrail();
-    }
+        public Entity(Guid id)
+        {
+            Id = id;
+        }
 
-    public abstract class Entity : IApplyAuditTrail<object>
-    {
+        [Key]
+        public Guid Id { get; }
+
         public DateTimeOffset CreatedAt { get; set; }
 
         [MaxLength(64)]
@@ -29,10 +32,29 @@ namespace Moonlay.Core.Models
         public bool Tested { get; set; }
 
         public abstract object ToTrail();
+
+        public abstract bool IsSoftDelete();
+
+        public abstract bool IsHasTestMode();
     }
 
     public abstract class EntityTrail
     {
+        public EntityTrail() { }
+
+        public EntityTrail(Entity entity)
+        {
+            CreatedAt = entity.CreatedAt;
+            UpdatedAt = entity.UpdatedAt;
+            CreatedBy = entity.UpdatedBy;
+            UpdatedBy = entity.UpdatedBy;
+
+            Deleted = entity.Deleted;
+            Tested = entity.Tested;
+        }
+
+        public Int64 Id { get; set; }
+
         public DateTimeOffset CreatedAt { get; set; }
 
         [MaxLength(64)]

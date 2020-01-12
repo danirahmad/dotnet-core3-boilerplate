@@ -1,6 +1,6 @@
 using System;
 
-namespace Moonlay.MCService
+namespace Moonlay.Core.Models
 {
     public class RecordNotFoundException : Exception
     {

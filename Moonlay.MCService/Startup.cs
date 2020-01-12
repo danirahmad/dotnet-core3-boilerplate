@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Moonlay.Core.Models;
 using Moonlay.MCService.Consumers;
 using Moonlay.MCService.Customers.GraphQL;
 using Moonlay.MCService.Db;
@@ -174,15 +175,17 @@ namespace Moonlay.MCService
                 endpoints.MapControllers();
             });
 
-            app.Map("/grpc", c => {
+            app.Map("/grpc", c =>
+            {
                 c.UseRouting();
-                c.UseEndpoints(ep => {
+                c.UseEndpoints(ep =>
+                {
                     // ENABLE GRPC
                     ep.MapGrpcService<GreeterService>();
                 });
             });
 
-           
+
 
             // add http for Schema at default url /graphql
             // app.UseGraphQL<ISchema>();

@@ -22,7 +22,7 @@ namespace Moonlay.MCService.Producers
             Producer = new ProducerBuilder<string, MessageTypes.LogMessage>(sp.GetRequiredService<ProducerConfig>())
                 .SetKeySerializer(new AvroSerializer<string>(sp.GetRequiredService<ISchemaRegistryClient>()))
                 .SetValueSerializer(new AvroSerializer<MessageTypes.LogMessage>(sp.GetRequiredService<ISchemaRegistryClient>()))
-                .Build(); 
+                .Build();
         }
 
         public IProducer<string, MessageTypes.LogMessage> Producer { get; }

@@ -3,7 +3,7 @@ using System;
 
 namespace Moonlay.Core.Models
 {
-    public interface IRepoModel<TModel, TModelTrail> 
+    public interface IRepoEntity<TModel, TModelTrail>
         where TModel : Entity
         where TModelTrail : EntityTrail
     {

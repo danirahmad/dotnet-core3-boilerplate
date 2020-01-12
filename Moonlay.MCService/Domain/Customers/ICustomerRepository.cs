@@ -3,7 +3,7 @@ using Moonlay.MCService.Models;
 
 namespace Moonlay.MCService.Customers
 {
-    public interface ICustomerRepository : IRepoModel<Customer, CustomerTrail>
+    public interface ICustomerRepository : IRepoEntity<Customer, CustomerTrail>
     {
 
     }

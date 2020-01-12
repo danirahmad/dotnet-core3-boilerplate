@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.29519.181
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Moonlay.MCServiceWebApi", "Moonlay.MCService\Moonlay.MCServiceWebApi.csproj", "{FBD5F60E-CA86-4127-87D1-4C1DF9B49547}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Moonlay.MCService.UnitTests", "Moonlay.MCService.UnitTests\Moonlay.MCService.UnitTests.csproj", "{431336DC-54F1-44D0-9CCF-389E3CB9CDF8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Moonlay.MCServiceWebApi.UnitTests", "Moonlay.MCService.UnitTests\Moonlay.MCServiceWebApi.UnitTests.csproj", "{431336DC-54F1-44D0-9CCF-389E3CB9CDF8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Moonlay.DemoKafkaClient", "Moonlay.DemoKafkaClient\Moonlay.DemoKafkaClient.csproj", "{2AF65B2D-400E-48E2-AC65-F6E710C70786}"
 EndProject
@@ -18,9 +18,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		docker-compose.yml = docker-compose.yml
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Moonlay.MCServiceWebApp", "Moonlay.MCServiceConsumers\Moonlay.MCServiceWebApp.csproj", "{C88BE1EE-210D-4AA4-8BD5-8D07A2E0BD1D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Moonlay.Confluent.Kafka", "Moonlay.Confluent.Kafka\Moonlay.Confluent.Kafka.csproj", "{FCED9F44-3966-4E1A-AE45-408185C59C8B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Moonlay.Confluent.Kafka", "Moonlay.Confluent.Kafka\Moonlay.Confluent.Kafka.csproj", "{FCED9F44-3966-4E1A-AE45-408185C59C8B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Moonlay.WebApp", "Moonlay.WebApp\Moonlay.WebApp.csproj", "{D16D9BCB-DAE5-4C82-A2A1-8D9BF94C8F86}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{7DFBB7F8-FDCD-4EB6-8F20-971E806E861C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{088EB4EA-C2E7-4F58-9620-79254B156918}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Topics", "Topics", "{88E0E8F3-C614-4CDD-B687-DFF56C50FADE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -92,18 +98,6 @@ Global
 		{D02D0336-853E-497C-B802-169E5E51AB65}.Release|x64.Build.0 = Release|Any CPU
 		{D02D0336-853E-497C-B802-169E5E51AB65}.Release|x86.ActiveCfg = Release|Any CPU
 		{D02D0336-853E-497C-B802-169E5E51AB65}.Release|x86.Build.0 = Release|Any CPU
-		{C88BE1EE-210D-4AA4-8BD5-8D07A2E0BD1D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C88BE1EE-210D-4AA4-8BD5-8D07A2E0BD1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C88BE1EE-210D-4AA4-8BD5-8D07A2E0BD1D}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{C88BE1EE-210D-4AA4-8BD5-8D07A2E0BD1D}.Debug|x64.Build.0 = Debug|Any CPU
-		{C88BE1EE-210D-4AA4-8BD5-8D07A2E0BD1D}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{C88BE1EE-210D-4AA4-8BD5-8D07A2E0BD1D}.Debug|x86.Build.0 = Debug|Any CPU
-		{C88BE1EE-210D-4AA4-8BD5-8D07A2E0BD1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C88BE1EE-210D-4AA4-8BD5-8D07A2E0BD1D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C88BE1EE-210D-4AA4-8BD5-8D07A2E0BD1D}.Release|x64.ActiveCfg = Release|Any CPU
-		{C88BE1EE-210D-4AA4-8BD5-8D07A2E0BD1D}.Release|x64.Build.0 = Release|Any CPU
-		{C88BE1EE-210D-4AA4-8BD5-8D07A2E0BD1D}.Release|x86.ActiveCfg = Release|Any CPU
-		{C88BE1EE-210D-4AA4-8BD5-8D07A2E0BD1D}.Release|x86.Build.0 = Release|Any CPU
 		{FCED9F44-3966-4E1A-AE45-408185C59C8B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FCED9F44-3966-4E1A-AE45-408185C59C8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FCED9F44-3966-4E1A-AE45-408185C59C8B}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -116,9 +110,28 @@ Global
 		{FCED9F44-3966-4E1A-AE45-408185C59C8B}.Release|x64.Build.0 = Release|Any CPU
 		{FCED9F44-3966-4E1A-AE45-408185C59C8B}.Release|x86.ActiveCfg = Release|Any CPU
 		{FCED9F44-3966-4E1A-AE45-408185C59C8B}.Release|x86.Build.0 = Release|Any CPU
+		{D16D9BCB-DAE5-4C82-A2A1-8D9BF94C8F86}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D16D9BCB-DAE5-4C82-A2A1-8D9BF94C8F86}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D16D9BCB-DAE5-4C82-A2A1-8D9BF94C8F86}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D16D9BCB-DAE5-4C82-A2A1-8D9BF94C8F86}.Debug|x64.Build.0 = Debug|Any CPU
+		{D16D9BCB-DAE5-4C82-A2A1-8D9BF94C8F86}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D16D9BCB-DAE5-4C82-A2A1-8D9BF94C8F86}.Debug|x86.Build.0 = Debug|Any CPU
+		{D16D9BCB-DAE5-4C82-A2A1-8D9BF94C8F86}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D16D9BCB-DAE5-4C82-A2A1-8D9BF94C8F86}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D16D9BCB-DAE5-4C82-A2A1-8D9BF94C8F86}.Release|x64.ActiveCfg = Release|Any CPU
+		{D16D9BCB-DAE5-4C82-A2A1-8D9BF94C8F86}.Release|x64.Build.0 = Release|Any CPU
+		{D16D9BCB-DAE5-4C82-A2A1-8D9BF94C8F86}.Release|x86.ActiveCfg = Release|Any CPU
+		{D16D9BCB-DAE5-4C82-A2A1-8D9BF94C8F86}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{FBD5F60E-CA86-4127-87D1-4C1DF9B49547} = {7DFBB7F8-FDCD-4EB6-8F20-971E806E861C}
+		{431336DC-54F1-44D0-9CCF-389E3CB9CDF8} = {7DFBB7F8-FDCD-4EB6-8F20-971E806E861C}
+		{9C2553F3-72FB-4B60-94A8-0CDB9B743852} = {88E0E8F3-C614-4CDD-B687-DFF56C50FADE}
+		{D02D0336-853E-497C-B802-169E5E51AB65} = {088EB4EA-C2E7-4F58-9620-79254B156918}
+		{FCED9F44-3966-4E1A-AE45-408185C59C8B} = {088EB4EA-C2E7-4F58-9620-79254B156918}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5F96B1F9-7C54-4A9A-BED5-EA029AC6323D}

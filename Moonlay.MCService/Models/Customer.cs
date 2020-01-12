@@ -6,12 +6,7 @@ namespace Moonlay.MCService.Models
 {
     public class Customer : Entity
     {
-        public Customer(Guid id)
-        {
-            Id = id;
-        }
-
-        public Guid Id { get; }
+        public Customer(Guid id) : base(id) { }
 
         [MaxLength(64)]
         public string FirstName { get; set; }
@@ -19,27 +14,36 @@ namespace Moonlay.MCService.Models
         [MaxLength(64)]
         public string LastName { get; set; }
 
+        public override bool IsHasTestMode()
+        {
+            return true;
+        }
+
+        public override bool IsSoftDelete()
+        {
+            return true;
+        }
+
         public override object ToTrail()
         {
-            return new CustomerTrail
+            return new CustomerTrail(this)
             {
                 CustomerId = Id,
                 FirstName = FirstName,
-                LastName = LastName,
-
-                CreatedAt = CreatedAt,
-                CreatedBy = CreatedBy,
-                UpdatedAt = UpdatedAt,
-                UpdatedBy = UpdatedBy,
-                Deleted = Deleted,
-                Tested = Tested
+                LastName = LastName
             };
         }
     }
 
     public class CustomerTrail : EntityTrail
     {
-        public Int64 Id { get; set; }
+        public CustomerTrail()
+        {
+        }
+
+        public CustomerTrail(Customer entity) : base(entity)
+        {
+        }
 
         public Guid CustomerId { get; set; }
 

@@ -12,7 +12,8 @@ namespace Moonlay.DemoKafkaClient
         static async Task Main(string[] args)
         {
             var config = new ProducerConfig() { BootstrapServers = "192.168.99.100:9092" };
-            var schemaRegistryConfig = new SchemaRegistryConfig { 
+            var schemaRegistryConfig = new SchemaRegistryConfig
+            {
                 Url = "192.168.99.100:8081",
                 // Note: you can specify more than one schema registry url using the
                 // schema.registry.url property for redundancy (comma separated list). 

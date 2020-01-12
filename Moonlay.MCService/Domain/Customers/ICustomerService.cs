@@ -1,7 +1,7 @@
+using Moonlay.MCService.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Moonlay.MCService.Models;
 
 namespace Moonlay.MCService.Customers
 {

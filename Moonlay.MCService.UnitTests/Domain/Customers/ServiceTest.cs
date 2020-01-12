@@ -1,15 +1,22 @@
-using System;
+using FluentAssertions;
+using Microsoft.EntityFrameworkCore;
+using Moonlay.Core.Models;
 using Moonlay.MCService.Customers;
 using Moonlay.MCService.Db;
 using Moq;
-using Xunit;
-using FluentAssertions;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
+using System;
 using System.Threading.Tasks;
+using Xunit;
 
 namespace Moonlay.MCService.UnitTests.Domain.Customers
 {
+    class SignInServiceMock : ISignInService
+    {
+        public string CurrentUser => "demo";
+
+        public bool Demo => true;
+    }
+
     internal class DbTestConnection : IDisposable
     {
         public DbTestConnection()
@@ -23,7 +30,7 @@ namespace Moonlay.MCService.UnitTests.Domain.Customers
                 .Options;
 
             DbTrail = new MyDbTrailContext(optionsTrail);
-            Db = new MyDbContext(options, DbTrail);
+            Db = new MyDbContext(options, DbTrail, new SignInServiceMock());
         }
 
         public MyDbContext Db { get; }
@@ -40,7 +47,6 @@ namespace Moonlay.MCService.UnitTests.Domain.Customers
     {
         private readonly MockRepository _MockRepo;
         private readonly Mock<ICustomerRepository> _CustomerRepo;
-        private readonly Mock<ISignInService> _SignInService;
 
         public ServiceTest()
         {
@@ -68,8 +74,6 @@ namespace Moonlay.MCService.UnitTests.Domain.Customers
             using (var db = new DbTestConnection())
             {
                 _CustomerRepo.Setup(s => s.DbSet).Returns(db.Db.Set<Models.Customer>());
-                _CustomerRepo.Setup(s => s.CurrentUser).Returns("samplelogin@moonlay.com");
-                _CustomerRepo.Setup(s => s.IsCurrentUserDemo).Returns(true);
 
                 // Action
                 var service = CreateService(db);
@@ -106,8 +110,6 @@ namespace Moonlay.MCService.UnitTests.Domain.Customers
             using (var db = new DbTestConnection())
             {
                 _CustomerRepo.Setup(s => s.DbSet).Returns(db.Db.Set<Models.Customer>());
-                _CustomerRepo.Setup(s => s.CurrentUser).Returns("samplelogin@moonlay.com");
-                _CustomerRepo.Setup(s => s.IsCurrentUserDemo).Returns(true);
 
                 // prepare data
                 var service = CreateService(db);
@@ -127,8 +129,6 @@ namespace Moonlay.MCService.UnitTests.Domain.Customers
             {
                 _CustomerRepo.Setup(s => s.DbSet).Returns(db.Db.Set<Models.Customer>());
                 _CustomerRepo.Setup(s => s.DbSetTrail).Returns(db.DbTrail.Set<Models.CustomerTrail>());
-                _CustomerRepo.Setup(s => s.CurrentUser).Returns("samplelogin@moonlay.com");
-                _CustomerRepo.Setup(s => s.IsCurrentUserDemo).Returns(true);
 
                 // prepare data
                 var service = CreateService(db);
@@ -147,7 +147,7 @@ namespace Moonlay.MCService.UnitTests.Domain.Customers
 
                 // validate the logs, should contain 2 records.
                 (await service.LogsAsync(newCustomer.Id)).Should().HaveCount(2);
-            }   
+            }
         }
     }
 }

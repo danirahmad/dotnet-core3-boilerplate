@@ -1,11 +1,9 @@
+using GraphQL;
+using GraphQL.Types;
+using Moonlay.MCService.Customers.GraphQL;
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
-using GraphQL;
-using GraphQL.Types;
-using Microsoft.Extensions.DependencyInjection;
-using Moonlay.MCService.Customers;
-using Moonlay.MCService.Customers.GraphQL;
 
 namespace Moonlay.MCService
 {
@@ -13,7 +11,7 @@ namespace Moonlay.MCService
     {
         public DQuery()
         {
-        
+
             // var scope = provider.CreateScope();
             // var service = scope.ServiceProvider.GetRequiredService<ICustomerService>();
 
@@ -44,7 +42,7 @@ namespace Moonlay.MCService
             Field<CustomerType>(
                 "createCustomer",
                 arguments: new QueryArguments(
-                    new QueryArgument<NonNullGraphType<StringGraphType>> {Name = "name"}
+                    new QueryArgument<NonNullGraphType<StringGraphType>> { Name = "name" }
                 ),
                 resolve: context =>
                 {
