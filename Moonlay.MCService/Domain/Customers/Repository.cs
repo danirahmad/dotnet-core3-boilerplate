@@ -4,6 +4,7 @@ using Moonlay.MCService.Db;
 using Moonlay.MCService.Models;
 using System.Linq;
 using System.Threading.Tasks;
+using Moonlay.Core.Models;
 
 namespace Moonlay.MCService.Customers
 {

@@ -1,19 +1,10 @@
-using System;
-using Microsoft.EntityFrameworkCore;
+using Moonlay.Core.Models;
 using Moonlay.MCService.Models;
 
 namespace Moonlay.MCService.Customers
 {
-    public interface ICustomerRepository
+    public interface ICustomerRepository : IRepoModel<Customer, CustomerTrail>
     {
-        DbSet<Customer> DbSet { get; }
 
-        DbSet<CustomerTrail> DbSetTrail { get; }
-
-        Customer With(Guid id);
-
-        string CurrentUser { get; }
-
-        bool IsCurrentUserDemo { get; }
     }
 }
