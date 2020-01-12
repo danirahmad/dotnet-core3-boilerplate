@@ -5,6 +5,7 @@ using GraphQL.Server;
 using GraphQL.Types;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -47,6 +48,8 @@ namespace Moonlay.MCService
             //ConfigureGraphQL(services);
 
             ConfigureKafka(services);
+
+            services.AddMetrics();
         }
 
         private void ConfigureKafka(IServiceCollection services)
@@ -83,6 +86,7 @@ namespace Moonlay.MCService
         private void ConfigureRestFullServices(IServiceCollection services)
         {
             services.AddControllers();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo
@@ -164,7 +168,6 @@ namespace Moonlay.MCService
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Test API V1");
             });
-
 
             app.UseEndpoints(endpoints =>
             {

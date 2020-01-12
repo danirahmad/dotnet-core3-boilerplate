@@ -1,11 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+#define HOSTING_OPTIONS
+
+using App.Metrics;
+using App.Metrics.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using System;
 
 namespace Moonlay.MCService
 {
@@ -13,20 +13,35 @@ namespace Moonlay.MCService
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            CreateHostBuilder(args)
+                .Build().Run();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-                .ConfigureLogging(logging =>
+#if REPORTING
+                .ConfigureMetricsWithDefaults(builder =>
                 {
-                    logging.ClearProviders();
-                    logging.AddConsole();
-                    logging.AddEventLog();
+                    builder.Report.ToConsole(TimeSpan.FromSeconds(1));
                 })
+#endif
+#if HOSTING_OPTIONS
+                .ConfigureAppMetricsHostingConfiguration(options =>
+                {
+                    // options.AllEndpointsPort = 3333;
+                    options.EnvironmentInfoEndpoint = "/my-env";
+                    //options.EnvironmentInfoEndpointPort = 1111;
+                    options.MetricsEndpoint = "/my-metrics";
+                    //options.MetricsEndpointPort = 2222;
+                    options.MetricsTextEndpoint = "/my-metrics-text";
+                    //options.MetricsTextEndpointPort = 3333;
+                })
+#endif
+                .UseMetrics()
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
                 });
+
     }
 }

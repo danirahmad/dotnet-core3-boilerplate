@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Moonlay.Confluent.Kafka;
 using Moonlay.MCService.Consumers;
 using System;
 using System.Threading;
