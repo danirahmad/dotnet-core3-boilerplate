@@ -7,7 +7,7 @@ namespace Moonlay.Confluent.Kafka
 {
     public interface IKafkaConsumer<TKey, TValue>
     {
-        Task Run(IServiceScope scope, CancellationToken cancellationToken = default);
+        Task Run(CancellationToken cancellationToken = default);
 
         string TopicName { get; }
 

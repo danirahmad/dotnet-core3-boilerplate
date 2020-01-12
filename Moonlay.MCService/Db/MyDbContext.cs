@@ -14,12 +14,12 @@ namespace Moonlay.MCServiceWebApi.Db
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<Customer>(etb =>
             {
                 etb.DefaultEntity();
             });
-
-            base.OnModelCreating(modelBuilder);
         }
     }
 

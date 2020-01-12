@@ -28,7 +28,7 @@ namespace Moonlay.Core.Models
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
-            var entities = this.ChangeTracker.Entries<Entity>();
+            var entities = this.ChangeTracker.Entries<Entity>().Where(o => o.State == EntityState.Added || o.State == EntityState.Modified || o.State == EntityState.Deleted);
             var now = DateTime.Now;
             var currentUser = _signInService.CurrentUser;
             var isDemo = _signInService.Demo;
@@ -63,9 +63,13 @@ namespace Moonlay.Core.Models
 
             var result = await base.SaveChangesAsync(cancellationToken);
 
-            await _trailContext.AddRangeAsync(trailEntities, cancellationToken);
+            if (trailEntities.Any())
+            {
+                await _trailContext.AddRangeAsync(trailEntities, cancellationToken);
 
-            await _trailContext.SaveChangesAsync(cancellationToken);
+                await _trailContext.SaveChangesAsync(cancellationToken);
+            }
+
 
             return result;
         }

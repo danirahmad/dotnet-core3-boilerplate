@@ -8,17 +8,22 @@ namespace Moonlay.Core.Models
         where TModel : Entity
         where TModelTrail : EntityTrail
     {
-        public DbSet<TModel> DbSet { get; }
-        public DbSet<TModelTrail> DbSetTrail { get; }
-        public string CurrentUser { get; }
-        public bool IsCurrentUserDemo { get; }
+
+        private readonly ISignInService _signIn;
+        private readonly IDbContext _dbContext;
+        private readonly IDbTrailContext _dbTrailContext;
+
+        public DbSet<TModel> DbSet => _dbContext.Set<TModel>();
+        public DbSet<TModelTrail> DbSetTrail => _dbTrailContext.Set<TModelTrail>();
+
+        public string CurrentUser => _signIn.CurrentUser;
+        public bool IsCurrentUserDemo => _signIn.Demo;
 
         public RepoEntity(IDbContext dbContext, IDbTrailContext dbTrailContext, ISignInService signIn)
         {
-            DbSet = dbContext.Set<TModel>();
-            DbSetTrail = dbTrailContext.Set<TModelTrail>();
-            CurrentUser = signIn.CurrentUser;
-            IsCurrentUserDemo = signIn.Demo;
+            _dbContext = dbContext;
+            _dbTrailContext = dbTrailContext;
+            _signIn = signIn;
         }
 
         public TModel With(Guid id)

@@ -1,0 +1,15 @@
+{
+  "name": "NewCustomerTopic",
+  "type": "record",
+  "namespace": "Moonlay.Topics.Customers",
+  "fields": [
+    {
+      "name": "FirstName",
+      "type": "string"
+    },
+    {
+      "name": "LastName",
+      "type": "string"
+    }
+  ]
+}

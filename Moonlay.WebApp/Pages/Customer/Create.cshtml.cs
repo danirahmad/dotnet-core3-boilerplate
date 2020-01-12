@@ -1,18 +1,34 @@
-﻿using Microsoft.AspNetCore.Mvc.RazorPages;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Moonlay.Topics.Customers;
 using Moonlay.WebApp.Producers;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
 namespace Moonlay.WebApp
 {
     public class CreateModel : PageModel
     {
-        private readonly INewCustomerProducer _newCustomerProducer;
+        public class NewCustomerForm
+        {
+            [MaxLength(64)]
+            [Required]
+            public string FirstName { get; set; }
+
+            [MaxLength(64)]
+            public string LastName { get; set; }
+        }
+
+        [BindProperty]
+        public NewCustomerForm Form { get; set; }
+
+        private readonly INewCustomerProducer _producer;
 
         public CreateModel(INewCustomerProducer newCustomerProducer)
         {
-            _newCustomerProducer = newCustomerProducer;
+            _producer = newCustomerProducer;
         }
 
         public Task OnGet()
@@ -21,17 +37,16 @@ namespace Moonlay.WebApp
             return Task.CompletedTask;
         }
 
-        public async Task OnPostAsync()
+        public async Task<IActionResult> OnPostAsync()
         {
-            var message = new MessageTypes.LogMessage
+            if (!ModelState.IsValid)
             {
-                IP = "192.168.0.1",
-                Message = "a test message 2",
-                Severity = MessageTypes.LogLevel.Info,
-                Tags = new Dictionary<string, string> { { "location", "CA" } }
-            };
+                return Page();
+            }
 
-            await _newCustomerProducer.Publish(Guid.NewGuid().ToString(), message);
+            await _producer.Publish(Guid.NewGuid().ToString(), new NewCustomerTopic { FirstName = this.Form.FirstName, LastName = this.Form.LastName });
+
+            return RedirectToPage("./Index");
         }
     }
 }

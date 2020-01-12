@@ -34,12 +34,12 @@ namespace Moonlay.MCServiceWebApi
 
             services.AddDbContext<MyDbContext>(options => options.UseSqlServer(Configuration.GetSection("ConnectionStrings:Connection").Value));
             services.AddDbContext<MyDbTrailContext>(options => options.UseSqlServer(Configuration.GetSection("ConnectionStrings:ConnectionTrail").Value));
-            services.AddTransient<IDbContext, MyDbContext>();
-            services.AddTransient<IDbTrailContext, MyDbTrailContext>();
+            services.AddScoped<IDbContext, MyDbContext>();
+            services.AddScoped<IDbTrailContext, MyDbTrailContext>();
 
-            services.AddTransient<ISignInService, SignInService>();
-            services.AddTransient<Customers.ICustomerRepository, Customers.Repository>();
-            services.AddTransient<Customers.ICustomerService, Customers.Service>();
+            services.AddScoped<ISignInService, SignInService>();
+            services.AddScoped<Customers.ICustomerRepository, Customers.Repository>();
+            services.AddScoped<Customers.ICustomerService, Customers.Service>();
 
             services.AddHttpContextAccessor();
             services.AddGrpc();
@@ -55,6 +55,8 @@ namespace Moonlay.MCServiceWebApi
 
         private void ConfigureKafka(IServiceCollection services)
         {
+            services.AddHostedService<HostedConsumers>();
+
             services.AddSingleton(c => new SchemaRegistryConfig
             {
                 Url = "192.168.99.100:8081",
@@ -80,8 +82,6 @@ namespace Moonlay.MCServiceWebApi
                 AutoOffsetReset = AutoOffsetReset.Earliest
             });
             services.AddScoped<INewCustomerConsumer, NewCustomerConsumer>();
-
-            services.AddHostedService<HostedConsumers>();
         }
 
         private void ConfigureRestFullServices(IServiceCollection services)

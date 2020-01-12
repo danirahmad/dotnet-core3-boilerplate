@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Moonlay.WebApp.Producers
 {
-    public interface INewCustomerProducer : IKafkaProducer<string, MessageTypes.LogMessage> { }
+    public interface INewCustomerProducer : IKafkaProducer<string, Topics.Customers.NewCustomerTopic> { }
 
     internal class NewCustomerProducer : INewCustomerProducer
     {
@@ -19,19 +19,19 @@ namespace Moonlay.WebApp.Producers
         public NewCustomerProducer(ILogger<NewCustomerProducer> logger, IServiceProvider sp)
         {
             _logger = logger;
-            Producer = new ProducerBuilder<string, MessageTypes.LogMessage>(sp.GetRequiredService<ProducerConfig>())
+            Producer = new ProducerBuilder<string, Topics.Customers.NewCustomerTopic>(sp.GetRequiredService<ProducerConfig>())
                 .SetKeySerializer(new AvroSerializer<string>(sp.GetRequiredService<ISchemaRegistryClient>()))
-                .SetValueSerializer(new AvroSerializer<MessageTypes.LogMessage>(sp.GetRequiredService<ISchemaRegistryClient>()))
+                .SetValueSerializer(new AvroSerializer<Topics.Customers.NewCustomerTopic>(sp.GetRequiredService<ISchemaRegistryClient>()))
                 .Build();
         }
 
-        public IProducer<string, MessageTypes.LogMessage> Producer { get; }
+        public IProducer<string, Topics.Customers.NewCustomerTopic> Producer { get; }
 
-        public string TopicName => "newCustomerTopic";
+        public string TopicName => "new-customer-topic";
 
-        public async Task Publish(string key, MessageTypes.LogMessage value, CancellationToken cancellationToken = default)
+        public async Task Publish(string key, Topics.Customers.NewCustomerTopic value, CancellationToken cancellationToken = default)
         {
-            var dr = await Producer.ProduceAsync("newCustomerTopic", new Message<string, MessageTypes.LogMessage> { Key = key, Value = value });
+            var dr = await Producer.ProduceAsync(TopicName, new Message<string, Topics.Customers.NewCustomerTopic> { Key = key, Value = value });
 
             Producer.Flush();
 
