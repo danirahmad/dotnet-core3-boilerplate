@@ -4,7 +4,6 @@ using Moonlay.Core.Models;
 using Moonlay.Topics.Customers;
 using Moonlay.WebApp.Producers;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 

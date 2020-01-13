@@ -12,10 +12,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Moonlay.Core.Models;
+using Moonlay.MCServiceGRPC;
 using Moonlay.MCServiceWebApi.Consumers;
 using Moonlay.MCServiceWebApi.Customers.GraphQL;
 using Moonlay.MCServiceWebApi.Db;
-using Moonlay.MCServiceGRPC;
 
 namespace Moonlay.MCServiceWebApi
 {
