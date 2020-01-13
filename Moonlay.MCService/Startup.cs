@@ -157,14 +157,13 @@ namespace Moonlay.MCServiceWebApi
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-            // app.UseCookiePolicy();
+            //app.UseCookiePolicy();
 
             app.UseRouting();
             // app.UseRequestLocalization();
             // app.UseCors();
 
             app.UseAuthentication();
-            app.UseAuthorization();
             // app.UseSession();
 
             app.UseSwagger();
@@ -172,6 +171,8 @@ namespace Moonlay.MCServiceWebApi
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Test API V1");
             });
+
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

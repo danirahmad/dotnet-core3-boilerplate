@@ -3,6 +3,7 @@
 using App.Metrics.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace Moonlay.WebApp
 {
@@ -33,7 +34,18 @@ namespace Moonlay.WebApp
                 .UseMetrics()
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseStartup<Startup>();
+                    webBuilder
+                    .ConfigureLogging((hostingContext, logging) =>
+                    {
+                        // The ILoggingBuilder minimum level determines the
+                        // the lowest possible level for logging. The log4net
+                        // level then sets the level that we actually log at.
+                        logging.AddLog4Net();
+                        logging.SetMinimumLevel(LogLevel.Debug);
+                    })
+                    .UseSentry(c => { })
+                    .UseStartup<Startup>()
+                    ;
                 });
     }
 }

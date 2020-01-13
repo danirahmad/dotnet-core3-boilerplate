@@ -1,4 +1,4 @@
-version: '2.1'
+version: '3.3'
 
 services:
   zoo1:
@@ -162,3 +162,43 @@ services:
       SERVER_HTTP_PORT: 9000
     depends_on:
       - zoo1
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:${ES_TAG}
+    container_name: elasticsearch
+    restart: always
+    ports:
+      - 9200:9200
+    environment:
+      discovery.type: single-node
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+  oap:
+    image: apache/skywalking-oap-server
+    container_name: oap
+    depends_on:
+      - elasticsearch
+    links:
+      - elasticsearch
+    restart: always
+    ports:
+      - 11800:11800
+      - 12800:12800
+    environment:
+      SW_STORAGE: elasticsearch
+      SW_STORAGE_ES_CLUSTER_NODES: elasticsearch:9200
+
+  ui:
+    image: apache/skywalking-ui
+    container_name: ui
+    depends_on:
+      - oap
+    links:
+      - oap
+    restart: always
+    ports:
+      - 8080:8080
+    environment:
+      SW_OAP_ADDRESS: oap:12800
