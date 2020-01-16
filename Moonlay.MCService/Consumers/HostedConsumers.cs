@@ -36,8 +36,8 @@ namespace Moonlay.MasterData.WebApi
             using (var scope = Services.CreateScope())
             {
                 var tasks = new Task[] {
-                    scope.ServiceProvider.GetRequiredService<INewCustomerConsumer>().Run(stoppingToken),
-                    scope.ServiceProvider.GetRequiredService<IUpdateCustomerConsumer>().Run(stoppingToken)
+                    Task.Run(async()=>await scope.ServiceProvider.GetRequiredService<INewCustomerConsumer>().Run(stoppingToken)),
+                    Task.Run(async()=>await scope.ServiceProvider.GetRequiredService<IUpdateCustomerConsumer>().Run(stoppingToken))
                 };
 
                 Task.WaitAll(tasks);
