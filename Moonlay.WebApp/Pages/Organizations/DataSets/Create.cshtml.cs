@@ -51,14 +51,7 @@ namespace Moonlay.WebApp
                 return Page();
             }
 
-            await _producer.Publish("mdm-newdataset-topic", new Topics.MessageHeader
-            {
-                Token = Guid.NewGuid().ToString(),
-                AppOrigin = "Moonlay.WebApp",
-                Timestamp = DateTime.Now.ToString("s"),
-                CurrentUser = _signIn.CurrentUser,
-                IsCurrentUserDemo = _signIn.Demo
-            },
+            await _producer.Publish("mdm-newdataset-topic", _signIn.GenMessageHeader(),
             new Topics.MDM.DataSets.NewDataSetTopic { 
                 Name = Form.Name,
                 DomainName = Form.DomainName,
