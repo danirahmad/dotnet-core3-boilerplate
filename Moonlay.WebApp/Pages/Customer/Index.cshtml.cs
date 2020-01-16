@@ -2,7 +2,7 @@
 
 namespace Moonlay.WebApp
 {
-    public class IndexModel : PageModel
+    public class IndexCustomerModel : PageModel
     {
         public void OnGet()
         {

@@ -5,9 +5,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Controllers\WeatherForecastController.cs" />
+    <Compile Remove="Models\WeatherForecast.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="App.Metrics" Version="4.0.0-*" />
     <PackageReference Include="App.Metrics.AspNetCore.Mvc" Version="4.0.0-*" />
     <PackageReference Include="App.Metrics.Reporting.Console" Version="4.0.0-*" />
+    <PackageReference Include="Dapper.StrongName" Version="2.0.30" />
     <PackageReference Include="GraphQL" Version="2.4.0" />
     <PackageReference Include="GraphQL.Server.Transports.AspNetCore" Version="3.4.0" />
     <PackageReference Include="GraphQL.Server.Ui.Playground" Version="3.4.0" />

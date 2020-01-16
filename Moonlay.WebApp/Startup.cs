@@ -53,6 +53,7 @@ namespace Moonlay.WebApp
 
             services.AddScoped<INewCustomerProducer, NewCustomerProducer>();
             services.AddScoped<IUpdateCustomerProducer, UpdateCustomerProducer>();
+            services.AddScoped<INewDataSetProducer, NewDataSetProducer>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

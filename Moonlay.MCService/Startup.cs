@@ -16,6 +16,8 @@ using Moonlay.MCServiceGRPC;
 using Moonlay.MasterData.WebApi.Consumers;
 using Moonlay.MasterData.WebApi.Customers.GraphQL;
 using Moonlay.MasterData.WebApi.Db;
+using Moonlay.MasterData.WebApi.Domain.DataSets;
+using Moonlay.MasterData.WebApi.Domain.DataSets.Consumers;
 
 namespace Moonlay.MasterData.WebApi
 {
@@ -35,8 +37,15 @@ namespace Moonlay.MasterData.WebApi
             services.AddDbContext<MyDbContext>(options => options.UseSqlServer(Configuration.GetSection("ConnectionStrings:Connection").Value));
             services.AddDbContext<MyDbTrailContext>(options => options.UseSqlServer(Configuration.GetSection("ConnectionStrings:ConnectionTrail").Value));
 
+            services.AddScoped<IDbConnection>(c=> new MyConnection(new Microsoft.Data.SqlClient.SqlConnection(Configuration.GetSection("ConnectionStrings:Connection").Value)));
+
             services.AddScoped<IDbContext, MyDbContext>();
             services.AddScoped<IDbTrailContext, MyDbTrailContext>();
+
+
+            services.AddScoped<IDataSetRepository, DataSetRepository>();
+            services.AddScoped<IDataSetService, DataSetService>();
+
 
             services.AddScoped<ISignInService, SignInService>();
             services.AddScoped<Customers.ICustomerRepository, Customers.Repository>();
@@ -85,6 +94,7 @@ namespace Moonlay.MasterData.WebApi
             });
             services.AddScoped<INewCustomerConsumer, NewCustomerConsumer>();
             services.AddScoped<IUpdateCustomerConsumer, UpdateCustomerConsumer>();
+            services.AddScoped<INewDataSetConsumer, NewDataSetConsumer>();
         }
 
         private void ConfigureRestFullServices(IServiceCollection services)

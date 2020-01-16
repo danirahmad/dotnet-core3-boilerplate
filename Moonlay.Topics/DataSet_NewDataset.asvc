@@ -1,0 +1,19 @@
+{
+  "name": "NewDataSetTopic",
+  "type": "record",
+  "namespace": "Moonlay.Topics.MDM.DataSets",
+  "fields": [
+    {
+      "name": "Name",
+      "type": "string"
+    },
+    {
+      "name": "DomainName",
+      "type": "string"
+    },
+     {
+      "name": "OrgName",
+      "type": "string"
+    }
+  ]
+}
