@@ -5,9 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Producers\NewCustomerProducer.cs" />
-    <Compile Remove="Producers\NewDataSetProducer.cs" />
-    <Compile Remove="Producers\UpdateCustomerProducer.cs" />
+    <Compile Remove="Producers\**" />
+    <Content Remove="Producers\**" />
+    <EmbeddedResource Remove="Producers\**" />
+    <None Remove="Producers\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -28,7 +29,6 @@
 
   <ItemGroup>
     <Folder Include="Pages\Organizations\Domain\" />
-    <Folder Include="Producers\" />
   </ItemGroup>
 
 </Project>
