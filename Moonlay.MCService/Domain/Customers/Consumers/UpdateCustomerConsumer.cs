@@ -2,13 +2,13 @@
 using Confluent.SchemaRegistry;
 using Microsoft.Extensions.Logging;
 using Moonlay.Confluent.Kafka;
-using Moonlay.MCServiceWebApi.Customers;
+using Moonlay.MasterData.WebApi.Customers;
 using Moonlay.Topics;
 using Moonlay.Topics.Customers;
 using System;
 using System.Threading.Tasks;
 
-namespace Moonlay.MCServiceWebApi.Consumers
+namespace Moonlay.MasterData.WebApi.Consumers
 {
     public interface IUpdateCustomerConsumer : IKafkaConsumer<MessageHeader, UpdateCustomerTopic> { }
 

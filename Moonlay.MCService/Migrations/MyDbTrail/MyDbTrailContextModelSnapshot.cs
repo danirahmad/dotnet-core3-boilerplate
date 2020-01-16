@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Moonlay.MCServiceWebApi.Db;
+using Moonlay.MasterData.WebApi.Db;
 
-namespace Moonlay.MCServiceWebApi.Migrations.MyDbTrail
+namespace Moonlay.MasterData.WebApi.Migrations.MyDbTrail
 {
     [DbContext(typeof(MyDbTrailContext))]
     partial class MyDbTrailContextModelSnapshot : ModelSnapshot
@@ -19,7 +19,7 @@ namespace Moonlay.MCServiceWebApi.Migrations.MyDbTrail
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Moonlay.MCServiceWebApi.Models.CustomerTrail", b =>
+            modelBuilder.Entity("Moonlay.MasterData.WebApi.Models.CustomerTrail", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()

@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 using System;
 
-namespace Moonlay.MCServiceWebApi.Migrations
+namespace Moonlay.MasterData.WebApi.Migrations
 {
     public partial class Initial : Migration
     {

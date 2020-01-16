@@ -4,7 +4,7 @@ using App.Metrics.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
-namespace Moonlay.MCServiceWebApi
+namespace Moonlay.MasterData.WebApi
 {
     public class Program
     {

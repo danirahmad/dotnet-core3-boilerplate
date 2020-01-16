@@ -1,11 +1,11 @@
 using Moonlay.Core.Models;
-using Moonlay.MCServiceWebApi.Models;
+using Moonlay.MasterData.WebApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Moonlay.MCServiceWebApi.Customers
+namespace Moonlay.MasterData.WebApi.Customers
 {
     public class Service : ICustomerService
     {

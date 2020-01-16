@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Moonlay.MCServiceWebApi.Db;
+using Moonlay.MasterData.WebApi.Db;
 
-namespace Moonlay.MCServiceWebApi.Migrations
+namespace Moonlay.MasterData.WebApi.Migrations
 {
     [DbContext(typeof(MyDbContext))]
     [Migration("20200112080408_Initial")]
@@ -21,7 +21,7 @@ namespace Moonlay.MCServiceWebApi.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Moonlay.MCServiceWebApi.Models.Customer", b =>
+            modelBuilder.Entity("Moonlay.MasterData.WebApi.Models.Customer", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()

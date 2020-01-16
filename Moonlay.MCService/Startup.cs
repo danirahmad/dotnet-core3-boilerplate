@@ -13,11 +13,11 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Moonlay.Core.Models;
 using Moonlay.MCServiceGRPC;
-using Moonlay.MCServiceWebApi.Consumers;
-using Moonlay.MCServiceWebApi.Customers.GraphQL;
-using Moonlay.MCServiceWebApi.Db;
+using Moonlay.MasterData.WebApi.Consumers;
+using Moonlay.MasterData.WebApi.Customers.GraphQL;
+using Moonlay.MasterData.WebApi.Db;
 
-namespace Moonlay.MCServiceWebApi
+namespace Moonlay.MasterData.WebApi
 {
     public class Startup
     {

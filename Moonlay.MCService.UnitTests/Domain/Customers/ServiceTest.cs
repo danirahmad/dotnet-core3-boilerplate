@@ -1,11 +1,11 @@
 using FluentAssertions;
-using Moonlay.MCServiceWebApi.Customers;
+using Moonlay.MasterData.WebApi.Customers;
 using Moq;
 using System;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Moonlay.MCServiceWebApi.UnitTests.Domain.Customers
+namespace Moonlay.MasterData.WebApi.UnitTests.Domain.Customers
 {
     public class ServiceTest : IDisposable
     {
@@ -23,7 +23,7 @@ namespace Moonlay.MCServiceWebApi.UnitTests.Domain.Customers
             _MockRepo.VerifyAll();
         }
 
-        private MCServiceWebApi.Customers.Service CreateService(DbTestConnection db)
+        private Service CreateService(DbTestConnection db)
         {
             return new Service(_CustomerRepo.Object, db.Db);
         }

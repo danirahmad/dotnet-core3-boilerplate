@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Moonlay.Core.Models;
-using Moonlay.MCServiceWebApi.Models;
+using Moonlay.MasterData.WebApi.Models;
 
-namespace Moonlay.MCServiceWebApi.Db
+namespace Moonlay.MasterData.WebApi.Db
 {
     public class MyDbContext : MoonlayDbContext
     {

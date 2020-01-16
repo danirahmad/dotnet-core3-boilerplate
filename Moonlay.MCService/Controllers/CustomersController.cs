@@ -1,12 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Moonlay.MCServiceWebApi.Controllers.DTO;
-using Moonlay.MCServiceWebApi.Customers;
+using Moonlay.MasterData.WebApi.Controllers.DTO;
+using Moonlay.MasterData.WebApi.Customers;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Moonlay.MCServiceWebApi.Controllers
+namespace Moonlay.MasterData.WebApi.Controllers
 {
     [ApiController]
     [Route("api/customers")]
