@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Moonlay.Confluent.Kafka;
 using Moonlay.Core.Models;
-using Moonlay.WebApp.Producers;
+using System;
+using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 
 namespace Moonlay.WebApp
 {
@@ -29,13 +27,13 @@ namespace Moonlay.WebApp
             public string OrgName { get; set; }
         }
 
-        private readonly INewDataSetProducer _producer;
+        private readonly IKafkaProducer _producer;
         private readonly ISignInService _signIn;
 
         [BindProperty]
         public NewDataSetForm Form { get; set; }
 
-        public CreateDataSetModel(INewDataSetProducer producer, ISignInService signIn)
+        public CreateDataSetModel(IKafkaProducer producer, ISignInService signIn)
         {
             _producer = producer;
             _signIn = signIn;
@@ -53,7 +51,7 @@ namespace Moonlay.WebApp
                 return Page();
             }
 
-            await _producer.Publish(new Topics.MessageHeader
+            await _producer.Publish("mdm-newdataset-topic", new Topics.MessageHeader
             {
                 Token = Guid.NewGuid().ToString(),
                 AppOrigin = "Moonlay.WebApp",

@@ -5,6 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Producers\NewCustomerProducer.cs" />
+    <Compile Remove="Producers\NewDataSetProducer.cs" />
+    <Compile Remove="Producers\UpdateCustomerProducer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Moonlay.Confluent.Kafka\Moonlay.Confluent.Kafka.csproj" />
     <ProjectReference Include="..\Moonlay.Core.Models\Moonlay.Core.Models.csproj" />
     <ProjectReference Include="..\Moonlay.Topics\Moonlay.Topics.csproj" />
@@ -22,6 +28,7 @@
 
   <ItemGroup>
     <Folder Include="Pages\Organizations\Domain\" />
+    <Folder Include="Producers\" />
   </ItemGroup>
 
 </Project>

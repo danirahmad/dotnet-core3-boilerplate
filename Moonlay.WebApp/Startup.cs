@@ -5,9 +5,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using Moonlay.Confluent.Kafka;
 using Moonlay.Core.Models;
-using Moonlay.WebApp.Producers;
 
 namespace Moonlay.WebApp
 {
@@ -51,9 +50,7 @@ namespace Moonlay.WebApp
             services.AddSingleton<ISchemaRegistryClient>(c => new CachedSchemaRegistryClient(c.GetRequiredService<SchemaRegistryConfig>()));
             services.AddSingleton(c => new ProducerConfig() { BootstrapServers = "192.168.99.100:9092" });
 
-            services.AddScoped<INewCustomerProducer, NewCustomerProducer>();
-            services.AddScoped<IUpdateCustomerProducer, UpdateCustomerProducer>();
-            services.AddScoped<INewDataSetProducer, NewDataSetProducer>();
+            services.AddScoped<IKafkaProducer, KafkaProducer>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

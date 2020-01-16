@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Moonlay.Confluent.Kafka;
 using Moonlay.Core.Models;
 using Moonlay.Topics.Customers;
-using Moonlay.WebApp.Producers;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
@@ -24,12 +24,12 @@ namespace Moonlay.WebApp
         [BindProperty]
         public NewCustomerForm Form { get; set; }
 
-        private readonly INewCustomerProducer _producer;
+        private readonly IKafkaProducer _producer;
         private readonly ISignInService _signIn;
 
-        public CreateModel(INewCustomerProducer newCustomerProducer, ISignInService signIn)
+        public CreateModel(IKafkaProducer producer, ISignInService signIn)
         {
-            _producer = newCustomerProducer;
+            _producer = producer;
             _signIn = signIn;
         }
 
@@ -46,7 +46,7 @@ namespace Moonlay.WebApp
                 return Page();
             }
 
-            await _producer.Publish(new Topics.MessageHeader
+            await _producer.Publish("new-customer-topic2", new Topics.MessageHeader
             {
                 Token = Guid.NewGuid().ToString(),
                 AppOrigin = "Moonlay.WebApp",

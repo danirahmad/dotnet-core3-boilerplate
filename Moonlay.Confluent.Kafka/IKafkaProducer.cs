@@ -44,4 +44,39 @@ namespace Moonlay.Confluent.Kafka
             _logger.LogInformation($"Delivered '{dr.Value}' to '{dr.TopicPartitionOffset}'");
         }
     }
+
+    public interface IKafkaProducer
+    {
+        Task Publish<TKey, TValue>(string topicName, TKey key, TValue value);
+    }
+
+    public class KafkaProducer : IKafkaProducer
+    {
+        private readonly ILogger<KafkaProducer> _logger;
+        private readonly ISchemaRegistryClient _schemaRegistryClient;
+        private readonly ProducerConfig _config;
+
+        public KafkaProducer(ILogger<KafkaProducer> logger, ISchemaRegistryClient schemaRegistryClient, ProducerConfig config)
+        {
+            _logger = logger;
+            _schemaRegistryClient = schemaRegistryClient;
+            _config = config;
+        }
+
+        public async Task Publish<TKey, TValue>(string topicName, TKey key, TValue value)
+        {
+            var producer = new ProducerBuilder<TKey, TValue>(_config)
+                .SetKeySerializer(new AvroSerializer<TKey>(_schemaRegistryClient))
+                .SetValueSerializer(new AvroSerializer<TValue>(_schemaRegistryClient))
+                .Build();
+
+            var dr = await producer.ProduceAsync(topicName, new Message<TKey, TValue> { Key = key, Value = value });
+
+            producer.Flush();
+
+            _logger.LogInformation($"Delivered '{dr.Value}' to '{dr.TopicPartitionOffset}'");
+        }
+    }
+
+    
 }
