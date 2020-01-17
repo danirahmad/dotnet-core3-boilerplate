@@ -21,6 +21,12 @@
     <PackageReference Include="App.Metrics" Version="4.0.0-*" />
     <PackageReference Include="App.Metrics.AspNetCore.Mvc" Version="4.0.0-*" />
     <PackageReference Include="App.Metrics.Reporting.Console" Version="4.0.0-*" />
+    <PackageReference Include="Google.Protobuf" Version="3.11.2" />
+    <PackageReference Include="Grpc.Net.Client" Version="2.26.0" />
+    <PackageReference Include="Grpc.Tools" Version="2.26.0">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.1.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Log4Net.AspNetCore" Version="3.0.3" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.0" />
@@ -28,7 +34,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Pages\Organizations\Domain\" />
+    <Protobuf Include="..\Protos\mdm.proto" GrpcServices="Client" />
   </ItemGroup>
 
 </Project>

@@ -4,7 +4,6 @@ using Moonlay.MasterData.WebApi.Domain.DataSets;
 using Moonlay.MasterData.WebApi.Models;
 using Moq;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -39,7 +38,7 @@ namespace Moonlay.MasterData.WebApi.UnitTests.Domain.DataSets
             string domainName = "dbo";
 
             // Act
-            var result = await dataSetRepository.AllDataSetsAsync(
+            var result = await dataSetRepository.AllAsync(
                 domainName);
 
             // Assert
@@ -76,10 +75,7 @@ namespace Moonlay.MasterData.WebApi.UnitTests.Domain.DataSets
 
             // Act
             await dataSetRepository.Create(
-                name,
-                domainName,
-                orgName,
-                dataSetAttributes);
+                new DataSet { Name = name, DomainName = domainName });
 
             // Assert
             Assert.True(false);

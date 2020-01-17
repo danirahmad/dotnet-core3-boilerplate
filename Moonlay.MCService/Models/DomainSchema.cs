@@ -9,7 +9,7 @@ namespace Moonlay.MasterData.WebApi.Models
     public class DomainSchema : IModel
     {
         public string Name { get; set; }
-
         public string OrgName { get; set; }
+
     }
 }

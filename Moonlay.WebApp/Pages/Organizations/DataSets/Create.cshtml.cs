@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Moonlay.Confluent.Kafka;
 using Moonlay.Core.Models;
+using Moonlay.WebApp.Clients;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
@@ -28,14 +29,15 @@ namespace Moonlay.WebApp
         }
 
         private readonly IKafkaProducer _producer;
+        private readonly IManageDataSetClient _dataSetClient;
         private readonly ISignInService _signIn;
 
         [BindProperty]
         public NewDataSetForm Form { get; set; }
 
-        public CreateDataSetModel(IKafkaProducer producer, ISignInService signIn)
+        public CreateDataSetModel(IManageDataSetClient dataSetClient, ISignInService signIn)
         {
-            _producer = producer;
+            _dataSetClient = dataSetClient;
             _signIn = signIn;
         }
 
@@ -51,12 +53,7 @@ namespace Moonlay.WebApp
                 return Page();
             }
 
-            await _producer.Publish("mdm-newdataset-topic", _signIn.GenMessageHeader(),
-            new Topics.MDM.DataSets.NewDataSetTopic { 
-                Name = Form.Name,
-                DomainName = Form.DomainName,
-                OrgName = Form.OrgName
-            });
+            var reply = await _dataSetClient.NewDatasetAsync(new MasterData.Protos.NewDatasetReq { Name = Form.Name, DomainName = Form.DomainName, OrganizationName = Form.OrgName });
 
             return RedirectToPage("./Index");
         }

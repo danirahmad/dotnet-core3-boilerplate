@@ -18,21 +18,21 @@ namespace Moonlay.MasterData.WebApi.Domain.DataSets
             _db = db;
         }
 
-        public Task<List<DataSet>> AllDataSetsAsync(string domainName)
+        public Task<List<DataSet>> AllAsync(string domainName)
         {
             var datasets = _db.Connection.Query<InformationTable>("SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE table_schema=@domain",
                 new { domain = domainName }).Select(o => new DataSet
                 {
                     Name = o.TABLE_NAME,
                     Description = string.Empty,
-                    SchemaName = o.TABLE_SCHEMA
+                    DomainName = o.TABLE_SCHEMA
                 }).ToList();
 
             return Task.FromResult(datasets);
 
         }
 
-        public Task Create(string name, string domainName, string orgName, IEnumerable<DataSetAttribute> dataSetAttributes)
+        public Task Create(DataSet model)
         {
             throw new NotImplementedException();
         }

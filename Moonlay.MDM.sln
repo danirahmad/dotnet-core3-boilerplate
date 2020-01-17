@@ -16,13 +16,14 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CAF243F3-1876-4495-A4C1-D47E32FABBB4}"
 	ProjectSection(SolutionItems) = preProject
 		docker-compose.yml = docker-compose.yml
+		Protos\mdm.proto = Protos\mdm.proto
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Moonlay.Confluent.Kafka", "Moonlay.Confluent.Kafka\Moonlay.Confluent.Kafka.csproj", "{FCED9F44-3966-4E1A-AE45-408185C59C8B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Moonlay.WebApp", "Moonlay.WebApp\Moonlay.WebApp.csproj", "{D16D9BCB-DAE5-4C82-A2A1-8D9BF94C8F86}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{7DFBB7F8-FDCD-4EB6-8F20-971E806E861C}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebApi", "WebApi", "{7DFBB7F8-FDCD-4EB6-8F20-971E806E861C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{088EB4EA-C2E7-4F58-9620-79254B156918}"
 EndProject

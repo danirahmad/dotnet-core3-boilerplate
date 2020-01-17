@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+option csharp_namespace = "Moonlay.MasterData.Protos";
+
+package Moonlay;
+
+// The greeting service definition.
+service ManageOrganization {
+  // New Organization
+  rpc NewOrganization (NewOrganizationReq) returns (Reply);
+}
+
+service ManageDataSet {
+  // New dataset
+  rpc NewDataset (NewDatasetReq) returns (Reply);
+  rpc RemoveDataSet (RemoveDataSetReq) returns (Reply);
+}
+
+// The response message containing the greetings.
+message Reply {
+  bool success = 1;
+  string message = 2;
+}
+
+// The request message containing the user's name.
+message NewOrganizationReq {
+  string name = 1;
+}
+
+// Command for create a dataset
+message NewDatasetReq {
+  string name = 1;
+  string domainName = 2;
+  string organizationName = 3;
+}
+
+message RemoveDataSetReq {
+    string name = 1;
+}

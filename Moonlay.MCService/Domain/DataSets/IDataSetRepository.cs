@@ -6,11 +6,11 @@ namespace Moonlay.MasterData.WebApi.Domain.DataSets
 {
     public interface IDataSetRepository
     {
-        Task<List<DataSet>> AllDataSetsAsync(string domainName);
+        Task<List<DataSet>> AllAsync(string domainName);
 
         Task<List<DataSetAttribute>> GetAttributesAsync(string datasetName, string domainName);
 
-        Task Create(string name, string domainName, string orgName, IEnumerable<DataSetAttribute> dataSetAttributes);
+        Task Create(DataSet model);
 
         Task Delete(string name);
     }

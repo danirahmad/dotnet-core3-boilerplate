@@ -5,6 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Protos\**" />
+    <Content Remove="Protos\**" />
+    <EmbeddedResource Remove="Protos\**" />
+    <None Remove="Protos\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Remove="Controllers\WeatherForecastController.cs" />
     <Compile Remove="Models\WeatherForecast.cs" />
   </ItemGroup>
@@ -35,7 +42,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Protobuf Include="Protos\greet.proto" GrpcServices="Server" />
+    <Protobuf Include="..\Protos\mdm.proto" GrpcServices="Server" />
   </ItemGroup>
 
 </Project>
