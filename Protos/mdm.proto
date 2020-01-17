@@ -13,6 +13,7 @@ service ManageOrganization {
 service ManageDataSet {
   // New dataset
   rpc NewDataset (NewDatasetReq) returns (Reply);
+  rpc RemoveDataSet (RemoveDataSetReq) returns (Reply);
 }
 
 // The response message containing the greetings.
@@ -31,4 +32,8 @@ message NewDatasetReq {
   string name = 1;
   string domainName = 2;
   string organizationName = 3;
+}
+
+message RemoveDataSetReq {
+    string name = 1;
 }

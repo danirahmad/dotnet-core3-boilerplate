@@ -16,10 +16,16 @@ namespace Moonlay.WebApp.Clients
         {
             return base.NewDatasetAsync(request, headers, deadline, cancellationToken);
         }
+
+        public override AsyncUnaryCall<Reply> RemoveDataSetAsync(RemoveDataSetReq request, Metadata headers = null, DateTime? deadline = null, CancellationToken cancellationToken = default)
+        {
+            return base.RemoveDataSetAsync(request, headers, deadline, cancellationToken);
+        }
     }
 
     public interface IManageDataSetClient
     {
         AsyncUnaryCall<Reply> NewDatasetAsync(NewDatasetReq request, Metadata headers = null, DateTime? deadline = null, CancellationToken cancellationToken = default);
+        AsyncUnaryCall<Reply> RemoveDataSetAsync(RemoveDataSetReq request, Metadata headers = null, DateTime? deadline = null, CancellationToken cancellationToken = default);
     }
 }

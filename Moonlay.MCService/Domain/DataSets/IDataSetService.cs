@@ -8,6 +8,7 @@ namespace Moonlay.MasterData.WebApi.Domain.DataSets
     public interface IDataSetService
     {
         Task NewDataSet(string name, string domainName, string orgName, IEnumerable<DataSetAttribute> attributes, Action<DataSet> beforeSave = null);
+        Task Remove(string name);
     }
 
     public class DataSetService : IDataSetService
@@ -37,6 +38,11 @@ namespace Moonlay.MasterData.WebApi.Domain.DataSets
             }
 
             await _dataSetRepository.Create(new DataSet { Description = "", Name = name, DomainName = domainName });
+        }
+
+        public Task Remove(string name)
+        {
+            throw new NotImplementedException();
         }
     }
 }

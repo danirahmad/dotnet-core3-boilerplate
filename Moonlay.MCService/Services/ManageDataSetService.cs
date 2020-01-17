@@ -17,14 +17,26 @@ namespace Moonlay.MasterData.WebApi.Services
             _dataSetService = dataSetService;
         }
 
-        public override Task<Reply> NewDataset(NewDatasetReq request, ServerCallContext context)
+        public override async Task<Reply> NewDataset(NewDatasetReq request, ServerCallContext context)
         {
-            _dataSetService.NewDataSet(request.Name, request.DomainName, request.OrganizationName, null);
+            await _dataSetService.NewDataSet(request.Name, request.DomainName, request.OrganizationName, null);
 
-            return Task.FromResult(new Reply { 
+            return new Reply
+            {
                 Success = true,
                 Message = "Successfully"
-            });
+            };
+        }
+
+        public override async Task<Reply> RemoveDataSet(RemoveDataSetReq request, ServerCallContext context)
+        {
+            await _dataSetService.Remove(request.Name);
+
+            return new Reply
+            {
+                Success = true,
+                Message = "Successfully"
+            };
         }
     }
 }
