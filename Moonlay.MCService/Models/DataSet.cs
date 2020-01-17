@@ -6,6 +6,6 @@ namespace Moonlay.MasterData.WebApi.Models
     {
         public string Name { get; set; }
         public string Description { get; set; }
-        public string SchemaName { get; set; }
+        public string DomainName { get; set; }
     }
 }

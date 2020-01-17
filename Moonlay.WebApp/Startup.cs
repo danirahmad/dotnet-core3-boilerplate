@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Moonlay.Confluent.Kafka;
 using Moonlay.Core.Models;
+using Moonlay.WebApp.Clients;
 
 namespace Moonlay.WebApp
 {
@@ -25,6 +26,7 @@ namespace Moonlay.WebApp
             services.AddHttpContextAccessor();
 
             services.AddScoped<ISignInService, SignInService>();
+            services.AddScoped<IManageDataSetClient>(c => new ManageDataSetClient(Grpc.Net.Client.GrpcChannel.ForAddress(Configuration.GetSection("Grpc:ServerUrl").Value)));
 
             services.AddRazorPages();
 

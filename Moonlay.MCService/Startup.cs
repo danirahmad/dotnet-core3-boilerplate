@@ -12,7 +12,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Moonlay.Core.Models;
-using Moonlay.MCServiceGRPC;
 using Moonlay.MasterData.WebApi.Consumers;
 using Moonlay.MasterData.WebApi.Customers.GraphQL;
 using Moonlay.MasterData.WebApi.Db;
@@ -187,17 +186,16 @@ namespace Moonlay.MasterData.WebApi
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                // ENABLE GRPC
+                endpoints.MapGrpcService<Services.ManageDataSetService>();
+                endpoints.MapGrpcService<Services.ManageOrganizationService>();
             });
 
-            app.Map("/grpc", c =>
-            {
-                c.UseRouting();
-                c.UseEndpoints(ep =>
-                {
-                    // ENABLE GRPC
-                    ep.MapGrpcService<GreeterService>();
-                });
-            });
+            //app.Map("/grpc", c =>
+            //{
+            //    c.UseRouting();
+                
+            //});
 
 
 
