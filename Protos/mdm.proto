@@ -29,4 +29,6 @@ message NewOrganizationReq {
 // Command for create a dataset
 message NewDatasetReq {
   string name = 1;
+  string domainName = 2;
+  string organizationName = 3;
 }

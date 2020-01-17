@@ -16,6 +16,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CAF243F3-1876-4495-A4C1-D47E32FABBB4}"
 	ProjectSection(SolutionItems) = preProject
 		docker-compose.yml = docker-compose.yml
+		Protos\mdm.proto = Protos\mdm.proto
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Moonlay.Confluent.Kafka", "Moonlay.Confluent.Kafka\Moonlay.Confluent.Kafka.csproj", "{FCED9F44-3966-4E1A-AE45-408185C59C8B}"
@@ -29,10 +30,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Topics", "Topics", "{88E0E8F3-C614-4CDD-B687-DFF56C50FADE}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Moonlay.Topics", "Moonlay.Topics\Moonlay.Topics.csproj", "{E8A57280-8D6A-462C-BB92-9A36F3F5102B}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Protos", "Protos", "{874496C5-AF48-40B9-9B28-665452B58B25}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Moonlay.MDM.Protos", "Moonlay.MDM.Protos\Moonlay.MDM.Protos.csproj", "{87141CE7-6038-4E38-9E5B-8C42CCDF8C2A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -140,18 +137,6 @@ Global
 		{E8A57280-8D6A-462C-BB92-9A36F3F5102B}.Release|x64.Build.0 = Release|Any CPU
 		{E8A57280-8D6A-462C-BB92-9A36F3F5102B}.Release|x86.ActiveCfg = Release|Any CPU
 		{E8A57280-8D6A-462C-BB92-9A36F3F5102B}.Release|x86.Build.0 = Release|Any CPU
-		{87141CE7-6038-4E38-9E5B-8C42CCDF8C2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{87141CE7-6038-4E38-9E5B-8C42CCDF8C2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{87141CE7-6038-4E38-9E5B-8C42CCDF8C2A}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{87141CE7-6038-4E38-9E5B-8C42CCDF8C2A}.Debug|x64.Build.0 = Debug|Any CPU
-		{87141CE7-6038-4E38-9E5B-8C42CCDF8C2A}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{87141CE7-6038-4E38-9E5B-8C42CCDF8C2A}.Debug|x86.Build.0 = Debug|Any CPU
-		{87141CE7-6038-4E38-9E5B-8C42CCDF8C2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{87141CE7-6038-4E38-9E5B-8C42CCDF8C2A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{87141CE7-6038-4E38-9E5B-8C42CCDF8C2A}.Release|x64.ActiveCfg = Release|Any CPU
-		{87141CE7-6038-4E38-9E5B-8C42CCDF8C2A}.Release|x64.Build.0 = Release|Any CPU
-		{87141CE7-6038-4E38-9E5B-8C42CCDF8C2A}.Release|x86.ActiveCfg = Release|Any CPU
-		{87141CE7-6038-4E38-9E5B-8C42CCDF8C2A}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -163,7 +148,6 @@ Global
 		{D02D0336-853E-497C-B802-169E5E51AB65} = {088EB4EA-C2E7-4F58-9620-79254B156918}
 		{FCED9F44-3966-4E1A-AE45-408185C59C8B} = {088EB4EA-C2E7-4F58-9620-79254B156918}
 		{E8A57280-8D6A-462C-BB92-9A36F3F5102B} = {88E0E8F3-C614-4CDD-B687-DFF56C50FADE}
-		{87141CE7-6038-4E38-9E5B-8C42CCDF8C2A} = {874496C5-AF48-40B9-9B28-665452B58B25}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5F96B1F9-7C54-4A9A-BED5-EA029AC6323D}

@@ -53,7 +53,7 @@ namespace Moonlay.WebApp
                 return Page();
             }
 
-            var reply = await _dataSetClient.NewDatasetAsync(new MasterData.Protos.NewDatasetReq { Name = Form.Name });
+            var reply = await _dataSetClient.NewDatasetAsync(new MasterData.Protos.NewDatasetReq { Name = Form.Name, DomainName = Form.DomainName, OrganizationName = Form.OrgName });
 
             return RedirectToPage("./Index");
         }
