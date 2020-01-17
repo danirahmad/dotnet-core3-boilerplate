@@ -46,14 +46,7 @@ namespace Moonlay.WebApp
                 return Page();
             }
 
-            await _producer.Publish("new-customer-topic2", new Topics.MessageHeader
-            {
-                Token = Guid.NewGuid().ToString(),
-                AppOrigin = "Moonlay.WebApp",
-                Timestamp = DateTime.Now.ToString("s"),
-                CurrentUser = _signIn.CurrentUser,
-                IsCurrentUserDemo = _signIn.Demo
-            },
+            await _producer.Publish("new-customer-topic2", _signIn.GenMessageHeader(),
             new NewCustomerTopic
             {
                 FirstName = this.Form.FirstName,

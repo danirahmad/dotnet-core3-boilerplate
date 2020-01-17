@@ -36,7 +36,7 @@ namespace Moonlay.MasterData.WebApi.Domain.DataSets
                 throw new ArgumentException("message", nameof(orgName));
             }
 
-            await _dataSetRepository.Create(name, domainName, orgName, new DataSetAttribute[] { });
+            await _dataSetRepository.Create(name, domainName, orgName, attributes);
 
         }
     }

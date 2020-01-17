@@ -37,7 +37,7 @@ namespace Moonlay.WebApp
         {
             services.AddSingleton(c => new SchemaRegistryConfig
             {
-                Url = "192.168.99.100:8081",
+                Url = Configuration.GetSection("Kafka:SchemaRegistryUrl").Value,
                 // Note: you can specify more than one schema registry url using the
                 // schema.registry.url property for redundancy (comma separated list). 
                 // The property name is not plural to follow the convention set by
@@ -48,7 +48,7 @@ namespace Moonlay.WebApp
             });
 
             services.AddSingleton<ISchemaRegistryClient>(c => new CachedSchemaRegistryClient(c.GetRequiredService<SchemaRegistryConfig>()));
-            services.AddSingleton(c => new ProducerConfig() { BootstrapServers = "192.168.99.100:9092" });
+            services.AddSingleton(c => new ProducerConfig() { BootstrapServers = Configuration.GetSection("Kafka:BootstrapServers").Value });
 
             services.AddScoped<IKafkaProducer, KafkaProducer>();
         }

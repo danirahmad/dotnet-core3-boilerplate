@@ -70,7 +70,7 @@ namespace Moonlay.MasterData.WebApi
 
             services.AddSingleton(c => new SchemaRegistryConfig
             {
-                Url = "192.168.99.100:8081",
+                Url = Configuration.GetSection("Kafka:SchemaRegistryUrl").Value,
                 // Note: you can specify more than one schema registry url using the
                 // schema.registry.url property for redundancy (comma separated list). 
                 // The property name is not plural to follow the convention set by
@@ -83,8 +83,8 @@ namespace Moonlay.MasterData.WebApi
 
             services.AddSingleton(c => new ConsumerConfig
             {
-                GroupId = "test-consumer-group",
-                BootstrapServers = "192.168.99.100:9092",
+                GroupId = "mdm-consumer-group",
+                BootstrapServers = Configuration.GetSection("Kafka:BootstrapServers").Value,
                 // Note: The AutoOffsetReset property determines the start offset in the event
                 // there are not yet any committed offsets for the consumer group for the
                 // topic/partitions of interest. By default, offsets are committed
